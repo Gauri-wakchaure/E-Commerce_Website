@@ -1,0 +1,2 @@
+let categories =[]
+let products = []
