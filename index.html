@@ -1,54 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCart - Your Online Shopping Destination</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header class="header">
-    <div class="nav-container">
-        <a href="#" class="logo" onclick="showPage('home')">SmartCart</a>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>SmartCart - Your Online Shopping Destination</title>  
+    <link rel="stylesheet" href="style.css">  
+</head>  
+<body>  
+ 
+<header class="header">  
+    <div class="nav-container"> 
+        <a href="#" class="logo" onclick="showPage('home')">SmartCart</a>  
+  
+        <div class="search-bar">  
+            <input type="text" id="searchInput" placeholder="Search Products..">  
+            <button>Search</button>  
+        </div>  
+  
+        <div class="nav-actions">  
+            <a href="#" class="nav-btn">👤Account</a>  
+            <a href="#" class="nav-btn">🛒Cart(<span id="cartCount">0</span>)</a>  
+            <a href="#" class="nav-btn">📦Orders</a>  
+        </div>  
+    </div>  
+</header>  
+  
+<main class="main-content">  
+    <div id="homePage" class="page">  
+       
+       <section class="hero">  
+         <div class="hero-content">  
+           <h1>Welcome to SmartCart</h1>  
+             <p>Your one-stop online shopping destination for all your needs.</p>  
+             <a href="#categories" class="hero-btn">Shop Now</a>  
+        </div>  
+    </section>  
+  
+    <section class="categories" id="categories">  
+        <div class="container">  
+            <h2>Shop by Category</h2>
 
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search Products..">
-            <button>Search</button>
-        </div>
-
-        <div class="nav-actions">
-            <a href="#" class="nav-btn">👤Account</a>
-            <a href="#" class="nav-btn">🛒Cart(<span id="cartCount">0</span>)</a>
-            <a href="#" class="nav-btn">📦Orders</a>
-        </div>
-    </div>
-</header>
-
-<main class="main-content">
-    <div id="homePage" class="page">
-       <section class="hero">
-         <div class="hero-content">
-           <h1>Welcome to SmartCart</h1>
-             <p>Your one-stop online shopping destination for all your needs.
-             </p>
-             <a href="#categories" class="hero-btn">Shop Now</a>
-        </div>
-    </section>
-
-    <section class="categories" id="categories">
-        <div class="container">
-            <h2>
-              Shop by Category
-            </h2>
-        <div>
-            
-        </div>
-        </div class="category-grid" id="categoryGrid">
-          <!-- Categories will be dynamically loaded here -->
-        </div>
-    </section>
-    </div>
-    </main>
-    <script src="script.js"></script>
-</body>
+            <h2 id="categoryTitle"></h2>
+             
+            <div class="category-grid" id="categoryGrid">  
+              <!-- Categories will be dynamically loaded here -->  
+            </div>  
+             
+        </div>  
+    </section>  
+    </div>  
+</main>  
+ 
+<script src="script.js"></script>  
+</body>  
 </html>
