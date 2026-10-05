@@ -96,6 +96,91 @@ function showCategory(categoryId){
 }else { 
     filteredProducts = products.filter(product => product.category === categoryId); 
     const category = categories.find(cat => cat.id === categoryId); 
-    document.getElementById("categoryTitle").textContent = category ? category.name : "Products"; 
+    document.getElementById("categoryTitle").textContent = category.name; 
   } 
+  populateFilters();
+  renderProducts();
+  showPage("category");
+}
+
+function populateFilters(){
+    const brandFilter = document.getElementById("brandFilter");
+    const brands = [...new Set(filteredProducts.map(product => product.brand))]
+    
+    brandFilter.innerHTML ='<option value="">All Brands</option>';
+    brands.forEach(brand=>{
+        const option=document.createElement("option")
+        option.value=brand;
+        option.textContent=brand;
+        brandFilter.appendChild(option)
+    })
+}
+
+function applyFilter(){ 
+    const sortBy = document.getElementById("sortBy").value; 
+    const maxPrice = parseInt(document.getElementById("priceRange").value); 
+    const selectedBrand = document.getElementById("brandFilter").value; 
+
+    document.getElementById("priceValue").textContent = "₹" + maxPrice; 
+
+    let filtered = filteredProducts.filter(product => { 
+        if(product.price > maxPrice) return false; 
+        if(selectedBrand && product.brand !== selectedBrand) 
+            return false;
+        return true;
+    });
+
+    switch(sortBy) {
+        case "price-low":
+            filtered.sort((a,b) =>a.price-b.price)
+            break;
+        case "price-high":
+            filtered.sort((a,b) =>b.price-a.price)
+            break;
+        case "rating":
+            filtered.sort((a,b) =>b.rating-a.rating)
+            break;
+        default:
+            break;
+    }
+
+    renderProducts(filtered);
+}
+
+function renderProducts(products = filteredProducts){
+    const productGrid = document.getElementById("productGrid")
+    productGrid.innerHTML="";
+
+    if(products.length === 0) {
+        productGrid.innerHTML='<p>No products found matching your criteria.</p>';
+        return;
+    }
+
+    product.forEach(product => {
+        const productCard = document.createElement("div");
+        productCard.className="product-card";
+
+        productCard.onclick =() => showProduct(product.id);
+
+        productCard.innerHTML= `
+        <img src="${product.image}" alt="${product.name}">
+        <div class="product-card-content">
+          <div class="product-brand">${product.brand}</div>
+          <h3>${product.name}<h3>
+          <div class="product-rating">
+          ${"★".repeat(Math.floor(product.rating))}${"☆".
+          repeat(5-Math.floor(product.rating))}
+          ${product.rating}
+          </div>
+          <div class="product-price">
+          <span class="current-price">₹${product.price}</span>
+          <span class="original-price">₹${product.originalPrice}</span>
+          <span class="discount">₹${product.discount}% OFF</span>
+          </div>
+          </div>`;
+
+
+          productGrid.appendChild(productCard);
+    })
+    
 }

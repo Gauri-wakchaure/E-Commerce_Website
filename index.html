@@ -39,17 +39,51 @@
     <section class="categories" id="categories">  
         <div class="container">  
             <h2>Shop by Category</h2>
+            <h2 id="categoryTitle"></h2> 
 
-            <h2 id="categoryTitle"></h2>
-             
             <div class="category-grid" id="categoryGrid">  
               <!-- Categories will be dynamically loaded here -->  
-            </div>  
-             
-        </div>  
-    </section>  
-    </div>  
-</main>  
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <div id="categoryPage" class="page hidden">
+        <div class="container">
+            <h1 id="categoryTitle">
+                Products
+            </h1>
+
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="sortby">Sort By:</label>
+                        <select id="sortBy">
+                          <option value="relevance">Relevance</option>
+                          <option value="price-low">Price: Low to High</option>
+                          <option value="price-high">Price: High to Low</option>
+                          <option value="rating">Rating</option>
+                       </select>
+                    </div>
+                    <div class="filter-group">
+                      <label for="priceRange">Max Price:</label>
+                      <input type="range" id="priceRange" min="0" max="10000" value="10000">
+                      <span id="priceValue">₹10000</span>
+                    </div>
+                    <div class="filter-group">
+                        <label for="brandFilter">Brand:</label>
+
+                        <select id="brandFilter">
+                            <option value="">All Brands</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid" id="productGrid">               
+            </div>
+        </div>
+    </div>
+</main>
  
 <script src="script.js"></script>  
 </body>  
