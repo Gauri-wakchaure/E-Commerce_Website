@@ -1,96 +1,237 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>SmartCart - Your Online Shopping Destination</title>  
-    <link rel="stylesheet" href="style.css">  
-</head>  
-<body>  
- 
-<header class="header">  
-    <div class="nav-container"> 
-        <a href="#" class="logo" onclick="showPage('home')">SmartCart</a>  
-  
-        <div class="search-bar">  
-            <input type="text" id="searchInput" placeholder="Search Products..">  
-            <button>Search</button>  
-        </div>  
-  
-        <div class="nav-actions">  
-            <a href="#" class="nav-btn">👤Account</a>  
-            <a href="#" class="nav-btn">🛒Cart(<span id="cartCount">0</span>)</a>  
-            <a href="#" class="nav-btn">📦Orders</a>  
-        </div>  
-    </div>  
-</header>  
-  
-<main class="main-content">  
-    <div id="homePage" class="page">  
-       
-       <section class="hero">  
-         <div class="hero-content">  
-           <h1>Welcome to SmartCart</h1>  
-             <p>Your one-stop online shopping destination for all your needs.</p>  
-             <a href="#categories" class="hero-btn">Shop Now</a>  
-        </div>  
-    </section>  
-  
-    <section class="categories" id="categories">  
-        <div class="container">  
-            <h2>Shop by Category</h2>
-            <h2 id="categoryTitle"></h2> 
+<!DOCTYPE html>
+<html lang="en">
 
-            <div class="category-grid" id="categoryGrid">  
-              <!-- Categories will be dynamically loaded here -->  
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartCart - Your Online Shopping Destination</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="nav-container">
+
+        <a href="#" class="logo" onclick="showPage('home')">
+            SmartCart
+        </a>
+
+        <div class="search-bar">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search Products.."
+            >
+
+            <button>Search</button>
+
         </div>
-    </section>
+
+        <div class="nav-actions">
+
+            <a href="#" class="nav-btn">👤Account</a>
+
+            <a href="#" class="nav-btn">
+                🛒Cart(<span id="cartCount">0</span>)
+            </a>
+
+            <a href="#" class="nav-btn">📦Orders</a>
+
+        </div>
+
     </div>
 
+</header>
+
+
+<main class="main-content">
+
+
+    <!-- HOME PAGE -->
+
+    <div id="homePage" class="page">
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1>Welcome to SmartCart</h1>
+
+                <p>
+                    Your one-stop online shopping destination for all your needs.
+                </p>
+
+                <a href="#categories" class="hero-btn">
+                    Shop Now
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="categories" id="categories">
+
+            <div class="container">
+
+                <h2>Shop by Category</h2>
+
+                <div
+                    class="category-grid"
+                    id="categoryGrid"
+                >
+                    <!-- Categories will be dynamically loaded here -->
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- CATEGORY PAGE -->
+
     <div id="categoryPage" class="page hidden">
+
         <div class="container">
+
             <h1 id="categoryTitle">
                 Products
             </h1>
 
-            <div class="filter-section">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="sortby">Sort By:</label>
-                        <select id="sortBy">
-                          <option value="relevance">Relevance</option>
-                          <option value="price-low">Price: Low to High</option>
-                          <option value="price-high">Price: High to Low</option>
-                          <option value="rating">Rating</option>
-                       </select>
-                    </div>
-                    <div class="filter-group">
-                      <label for="priceRange">Max Price:</label>
-                      <input type="range" id="priceRange" min="0" max="10000" value="10000">
-                      <span id="priceValue">₹10000</span>
-                    </div>
-                    <div class="filter-group">
-                        <label for="brandFilter">Brand:</label>
 
-                        <select id="brandFilter">
-                            <option value="">All Brands</option>
+            <div class="filter-section">
+
+                <div class="filter-row">
+
+
+                    <div class="filter-group">
+
+                        <label for="sortBy">
+                            Sort By:
+                        </label>
+
+                        <select
+                            id="sortBy"
+                            onchange="applyFilters()"
+                        >
+
+                            <option value="relevance">
+                                Relevance
+                            </option>
+
+                            <option value="price-low">
+                                Price: Low to High
+                            </option>
+
+                            <option value="price-high">
+                                Price: High to Low
+                            </option>
+
+                            <option value="rating">
+                                Rating
+                            </option>
+
                         </select>
+
                     </div>
+
+
+                    <div class="filter-group">
+
+                        <label for="priceRange">
+                            Max Price:
+                        </label>
+
+                        <input
+                            type="range"
+                            id="priceRange"
+                            min="0"
+                            max="10000"
+                            value="10000"
+                            onchange="applyFilters()"
+                        >
+
+                        <span id="priceValue">
+                            ₹10000
+                        </span>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <label for="brandFilter">
+                            Brand:
+                        </label>
+
+                        <select
+                            id="brandFilter"
+                            onchange="applyFilters()"
+                        >
+
+                            <option value="">
+                                All Brands
+                            </option>
+
+                        </select>
+
+                    </div>
+
                 </div>
+
             </div>
-            <div class="product-grid" id="productGrid">               
+
+
+            <div
+                class="product-grid"
+                id="productGrid"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCT PAGE -->
+
+    <div id="productPage" class="page hidden">
+
+        <div class="container">
+
+            <div
+                class="product-detail"
+                id="productDetail">
             </div>
         </div>
     </div>
-    <div id="productPage" class="page hidden">
+
+    <div id="cartPage" class="page hidden">
         <div class="container">
-            <div class="product-detail" id="productDetail">
-            </div>
+         <h1>
+            My Cart
+         </h1>
+         <div id ="cartItems">
+
         </div>
+        <div class="cart-summary" id="cartSummary">
+
+        </div>
+
     </div>
 </main>
- 
-<script src="script.js"></script>  
-</body>  
+
+
+<script src="script.js"></script>
+
+</body>
+
 </html>
+```
