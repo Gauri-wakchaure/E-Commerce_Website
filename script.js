@@ -573,10 +573,25 @@ function renderCart() {
     const cartItems = document.getElementById("cartItems");
     const cartSummary = document.getElementById("cartSummary");
 
-    it(cart.length === 0) (
-        cartItems.innerHTML = `<p> Your cart is empty. <a href="#" 
-        onclick= "showPage(\'home')"`
-    )
+    if(cart.length === 0) {
+        cartItems.innerHTML = `<p> Your cart is empty. <a href="#"
+        onclick= "showPage(\'home\')">Continue Shopping</a></p>`;
+        cartSummary.innerHTML = ' ';
+        return;
+    }
+
+    cartItems.innerHTML = '';
+    let totalOriginal = 0;
+    let totalDiscounted = 0;
+
+    cart.forEach((item,index) => {
+    const itemTotal = item.price * item.quantity;
+    const itemOriginalTotal = item.originalPrice * item.quantity;
+    totalOriginal += itemOriginalTotal;
+    totalDiscounted += itemTotal;
+
+    
+  })
 }
 
 function updateCartCount() {
