@@ -569,6 +569,16 @@ function addToCart(productId){
     alert("Product Added to Cart!");
 }
 
+function renderCart() {
+    const cartItems = document.getElementById("cartItems");
+    const cartSummary = document.getElementById("cartSummary");
+
+    it(cart.length === 0) (
+        cartItems.innerHTML = `<p> Your cart is empty. <a href="#" 
+        onclick= "showPage(\'home')"`
+    )
+}
+
 function updateCartCount() {
     const cartCount = cart.reduce((total,item)=> total + item.quantity,0)
     document.getElementById("cartCount").textContent = cartCount
