@@ -990,72 +990,47 @@ h1,h2,h3,h4,h5,h6 {
 
 .cart-summary {
     margin-top: 32px;
-
     margin-left: auto;
-
     max-width: 450px;
-
     background: var(--white);
-
     padding: 28px;
-
     border-radius: var(--border-radius-lg);
-
     border: 1px solid var(--gray-200);
-
     box-shadow: var(--card-shadow);
 }
 
 .cart-summary h2 {
     font-size: 22px;
-
     margin-bottom: 20px;
-
     color: var(--gray-900);
 }
 
 .cart-summary p {
     display: flex;
-
     justify-content: space-between;
-
     margin-bottom: 12px;
-
     color: var(--gray-600);
 }
 
 .cart-summary .total {
     display: flex;
-
     justify-content: space-between;
-
     padding-top: 16px;
-
     margin-top: 16px;
-
     border-top: 1px solid var(--gray-200);
-
     font-size: 20px;
-
     font-weight: 700;
-
     color: var(--gray-900);
 }
-
 
 /* EMPTY CART */
 
 .empty-cart {
     text-align: center;
-
     background: var(--white);
-
     padding: 60px 20px;
-
     border-radius: var(--border-radius-lg);
-
     border: 1px solid var(--gray-200);
-
     box-shadow: var(--card-shadow);
 }
 
@@ -1065,40 +1040,27 @@ h1,h2,h3,h4,h5,h6 {
 
 .empty-cart p {
     color: var(--gray-500);
-
     margin-bottom: 24px;
 }
-
 
 /* CART BUTTON */
 
 .checkout-btn {
     width: 100%;
-
     margin-top: 20px;
-
     padding: 14px 20px;
-
     background: linear-gradient(
         135deg,
         var(--primary-color),
         var(--primary-light)
     );
-
     color: white;
-
     border: none;
-
     border-radius: var(--border-radius-sm);
-
     font-family: inherit;
-
     font-size: 15px;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition: var(--transition);
 }
 
@@ -1108,12 +1070,9 @@ h1,h2,h3,h4,h5,h6 {
         var(--primary-dark),
         var(--primary-color)
     );
-
     transform: translateY(-2px);
-
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
-
 
 /* CART RESPONSIVE */
 
@@ -1129,7 +1088,6 @@ h1,h2,h3,h4,h5,h6 {
 
     .cart-item {
         flex-wrap: wrap;
-
         gap: 16px;
     }
 
@@ -1147,12 +1105,10 @@ h1,h2,h3,h4,h5,h6 {
     }
 }
 
-
 @media (max-width: 500px) {
 
     .cart-item {
         flex-direction: column;
-
         align-items: flex-start;
     }
 
