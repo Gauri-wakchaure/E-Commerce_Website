@@ -10,7 +10,9 @@ let currentUser = {
 
 let recentlyViewed = []
 let filteredProducts = []
-
+let cart = []
+let orders = []
+let currentOrderSteps = 1;
 
 async function loadData() {
     try {
@@ -528,6 +530,46 @@ function showProduct(productId) {
     `
 
     showPage("product")
+}
+
+function addToCart(productId){
+    const product = product = products.find(p => p.id === productId)
+    if(!product) return;
+
+    const selectedColor = document.getElementById("selectedColor")?.
+    value || " ";
+
+    const selectedSize = document.getElementById("selectedSize")?.
+    value || " ";
+
+    const existingItem = cart.find(items =>
+        item.id ===productId &&
+        item.color === selectedColor &&
+        item.size === selectedSize
+    )
+
+    if(existingItem){
+        existingItem.quantity += 1;
+    }else{
+        cart.push ({
+            id:productId,
+            name:product.name,
+            brand:product.brand,
+            price:product.price,
+            originalPrice:product.originalPrice,
+            discount:product.discount,
+            image:product.image,
+            color:selectedColor,
+            size:selectedSize,
+            quantity:1
+        })
+    }
+    updateCartCount();
+}
+
+function updateCartCount() {
+    const cartCount = cart.reduce((total,item)=> total + item.quantity,0)
+    document.getElementById("cartCount").textContent = cartCount
 }
 
 function saveRecentlyViewed() {
