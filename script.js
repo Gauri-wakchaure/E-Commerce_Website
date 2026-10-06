@@ -496,7 +496,7 @@ function showProduct(productId) {
             </p>
 
             <p>
-                10 days return policy
+                ↩️ 10 days return policy
             </p>
 
             <p>
