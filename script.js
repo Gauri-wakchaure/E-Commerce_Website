@@ -533,7 +533,7 @@ function showProduct(productId) {
 }
 
 function addToCart(productId){
-    const product = product = products.find(p => p.id === productId)
+    const product = products.find(p => p.id === productId)
     if(!product) return;
 
     const selectedColor = document.getElementById("selectedColor")?.
@@ -543,9 +543,9 @@ function addToCart(productId){
     value || " ";
 
     const existingItem = cart.find(items =>
-        item.id ===productId &&
-        item.color === selectedColor &&
-        item.size === selectedSize
+        items.id ===productId &&
+        items.color === selectedColor &&
+        items.size === selectedSize
     )
 
     if(existingItem){
@@ -565,11 +565,21 @@ function addToCart(productId){
         })
     }
     updateCartCount();
+    saveCartData();
+    alert("Product Added to Cart!");
 }
 
 function updateCartCount() {
     const cartCount = cart.reduce((total,item)=> total + item.quantity,0)
     document.getElementById("cartCount").textContent = cartCount
+}
+
+function saveCartData() {
+    try{
+        window.cartData = cart
+    } catch(e) {
+        console.log("Storage  not available.");
+    }
 }
 
 function saveRecentlyViewed() {
