@@ -620,7 +620,33 @@ function renderCart() {
         cartItems.appendChild(cartItem)
   })
 
+  const deliveryCharges = totalDiscount > 500 ? 0 :50 ;
+  const finalTotal = totalDiscounted + deliveryCharges;
+
+  cartSummary.innerHTML = `
+  <h3>Price Details</h3>
+  <div class="summary-row">
+     <span>Total MRP:</span>
+     <span>₹${totalOriginal}</span>
+  </div>
+  <div class="summary-row">
+     <span>Discount:</span>
+     <span>₹${totalOriginal - totalDiscounted}</span>
+  </div>
+  <div class="summary-row">
+     <span>Delivery Charges:</span>
+     <span>₹${deliveryCharges === 0 ? "FREE": "₹" + deliveryCharges}</span>
+  </div>
+  <div class="summary-divider">
+  <div class="summary-row summary-total">
+     <span>Total Amount:</span>
+     <span>₹${finalTotal}</span>
+  </div>
   
+  <button class="btn-primary" onclick="proceedCheckout()"
+  style="width:100%; margin-top:20px;">
+  Place Order
+  </button>`
 }
 
 function updateCartCount() {
