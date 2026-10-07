@@ -589,9 +589,38 @@ function renderCart() {
     const itemOriginalTotal = item.originalPrice * item.quantity;
     totalOriginal += itemOriginalTotal;
     totalDiscounted += itemTotal;
-
     
+    const cartItem = document.createElement("div");
+    cart.className="cart-item";
+    cartItem.innerHTML =`
+    <img src="${item.image}" alt="${item.name}">
+    <div class="cart-item-details">
+       <h1>${item.name}</h1>
+       <div class="product-brand">${item.brand}</div>
+       ${item.color ? `<p>Color: ${item.color}</p>`: ""}
+       ${item.size ? `<p>Size: ${item.size}</p>`: ""}
+       <div class="product-price">
+          <span class="current-price">₹${item.price}</span>
+          <span class="original-price">₹${item.originalPrice}</span>
+          <span class="discount">₹${item.discount}% OFF</span>
+        </div>
+        <div class="quantity-controls">
+           <button class="quantity-btn"
+           onclick="updateQuantity(${index}, -1)"></button>
+           <input type="number" class="quantity-input" value="${item.
+            quantity}" min="1"
+           onchange="updateQuantity(${index},0,this.value)">
+           <button class="quantity-btn"
+           onclick="updateQuantity(${index},1)">+</button>
+        </div>
+        <p>Total: ₹${itemTotal}</p>
+        <div>
+        <button class="btn-secondary" onclick="removeFromCart(${index})">
+        Remove</button>`;
+        cartItems.appendChild(cartItem)
   })
+
+  
 }
 
 function updateCartCount() {
