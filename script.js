@@ -160,7 +160,6 @@ function renderCategories() {
     })
 }
 
-
 // =========================
 // SHOW CATEGORY
 // =========================
@@ -197,7 +196,6 @@ function showCategory(categoryId) {
     showPage("category")
 }
 
-
 // =========================
 // POPULATE FILTERS
 // =========================
@@ -229,7 +227,6 @@ function populateFilters() {
         brandFilter.appendChild(option)
     })
 }
-
 
 // =========================
 // APPLY FILTERS
@@ -538,11 +535,13 @@ function showProduct(productId) {
 
         </div>
     `
-
     showPage("product")
 }
 
-
+function buyNow(productId){
+    addToCart(productId);
+    showPage("cart");
+}
 // =========================
 // ADD TO CART
 // =========================
