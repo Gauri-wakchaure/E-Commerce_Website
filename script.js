@@ -12,7 +12,7 @@ let recentlyViewed = []
 let filteredProducts = []
 let cart = []
 let orders = []
-let currentOrderSteps = 1;
+let currentOrderSteps = 1
 
 
 // =========================
@@ -21,7 +21,6 @@ let currentOrderSteps = 1;
 
 async function loadData() {
     try {
-
         const response = await fetch("data.json")
 
         if (!response.ok) {
@@ -36,11 +35,10 @@ async function loadData() {
         initializeApp()
 
     } catch (error) {
-
         console.error("Error loading data", error)
 
         document.body.innerHTML =
-            '<div style="text-align:center; margin-top:50px"><h2>Error loading data. Please refresh the page.</h2></div>'
+            '<div style="text-align:center;margin-top:50px"><h2>Error loading data. Please refresh the page.</h2></div>'
     }
 }
 
@@ -50,9 +48,8 @@ async function loadData() {
 // =========================
 
 function initializeApp() {
-
     renderCategories()
-
+    updateCartCount()
     showPage("home")
 }
 
@@ -62,9 +59,7 @@ function initializeApp() {
 // =========================
 
 document.addEventListener("DOMContentLoaded", function () {
-
     loadData()
-
 })
 
 
@@ -73,10 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
 // =========================
 
 function showPage(pageId) {
-
     const pages = document.querySelectorAll(".page")
 
-    pages.forEach(page => page.classList.add("hidden"))
+    pages.forEach(page => {
+        page.classList.add("hidden")
+    })
 
     const targetPage = document.getElementById(pageId + "Page")
 
@@ -87,30 +83,23 @@ function showPage(pageId) {
     switch (pageId) {
 
         case "home":
-
             renderCategories()
-
             break
-
 
         case "cart":
-
             renderCart()
-
             break
-
 
         case "orders":
-
             renderOrders()
-
             break
 
-
         case "account":
-
             renderAccountPage()
+            break
 
+        case "order":
+            renderOrderPage()
             break
     }
 }
@@ -125,9 +114,7 @@ function renderCategories() {
     const categoryGrid = document.getElementById("categoryGrid")
 
     if (!categoryGrid) {
-
         console.error("categoryGrid element not found")
-
         return
     }
 
@@ -145,21 +132,16 @@ function renderCategories() {
             <img src="${category.image}" alt="${category.name}">
 
             <div class="category-card-content">
-
                 <h3>${category.name}</h3>
-
                 <p>${category.description}</p>
         `
 
         if (category.isRecentlyViewed) {
 
             if (recentlyViewed.length === 0) {
-
                 cardContent +=
-                    '<p><em>No recently viewed products</em></p>'
-
+                    "<p><em>No recently viewed products</em></p>"
             } else {
-
                 cardContent +=
                     `<p>You have ${recentlyViewed.length} recently viewed products</p>`
             }
@@ -169,14 +151,12 @@ function renderCategories() {
                 <a href="#" class="category-btn">
                     View Products
                 </a>
-
             </div>
         `
 
         categoryCard.innerHTML = cardContent
 
         categoryGrid.appendChild(categoryCard)
-
     })
 }
 
@@ -189,35 +169,31 @@ function showCategory(categoryId) {
 
     if (categoryId === "recently-viewed") {
 
-        filteredProducts =
-            products.filter(product =>
-                recentlyViewed.includes(product.id)
-            )
+        filteredProducts = products.filter(product =>
+            recentlyViewed.includes(product.id)
+        )
 
         document.getElementById("categoryTitle").textContent =
             "Recently Viewed Products"
 
     } else {
 
-        filteredProducts =
-            products.filter(product =>
-                product.category === categoryId
-            )
+        filteredProducts = products.filter(product =>
+            product.category === categoryId
+        )
 
-        const category =
-            categories.find(cat => cat.id === categoryId)
+        const category = categories.find(cat =>
+            cat.id === categoryId
+        )
 
         if (category) {
-
             document.getElementById("categoryTitle").textContent =
                 category.name
         }
     }
 
     populateFilters()
-
     renderProducts()
-
     showPage("category")
 }
 
@@ -228,32 +204,29 @@ function showCategory(categoryId) {
 
 function populateFilters() {
 
-    const brandFilter =
-        document.getElementById("brandFilter")
+    const brandFilter = document.getElementById("brandFilter")
 
     if (!brandFilter) {
         return
     }
 
-    const brands =
-        [...new Set(
+    const brands = [
+        ...new Set(
             filteredProducts.map(product => product.brand)
-        )]
+        )
+    ]
 
     brandFilter.innerHTML =
         '<option value="">All Brands</option>'
 
     brands.forEach(brand => {
 
-        const option =
-            document.createElement("option")
+        const option = document.createElement("option")
 
         option.value = brand
-
         option.textContent = brand
 
         brandFilter.appendChild(option)
-
     })
 }
 
@@ -278,55 +251,34 @@ function applyFilters() {
     document.getElementById("priceValue").textContent =
         "₹" + maxPrice
 
-    let filtered =
-        filteredProducts.filter(product => {
+    let filtered = filteredProducts.filter(product => {
 
-            if (product.price > maxPrice) {
-                return false
-            }
+        if (product.price > maxPrice) {
+            return false
+        }
 
-            if (
-                selectedBrand &&
-                product.brand !== selectedBrand
-            ) {
-                return false
-            }
+        if (
+            selectedBrand &&
+            product.brand !== selectedBrand
+        ) {
+            return false
+        }
 
-            return true
-        })
-
+        return true
+    })
 
     switch (sortBy) {
 
         case "price-low":
-
-            filtered.sort(
-                (a, b) => a.price - b.price
-            )
-
+            filtered.sort((a, b) => a.price - b.price)
             break
-
 
         case "price-high":
-
-            filtered.sort(
-                (a, b) => b.price - a.price
-            )
-
+            filtered.sort((a, b) => b.price - a.price)
             break
-
 
         case "rating":
-
-            filtered.sort(
-                (a, b) => b.rating - a.rating
-            )
-
-            break
-
-
-        default:
-
+            filtered.sort((a, b) => b.rating - a.rating)
             break
     }
 
@@ -352,11 +304,10 @@ function renderProducts(productsToRender = filteredProducts) {
     if (productsToRender.length === 0) {
 
         productGrid.innerHTML =
-            '<p>No products found matching your criteria.</p>'
+            "<p>No products found matching your criteria.</p>"
 
         return
     }
-
 
     productsToRender.forEach(product => {
 
@@ -368,9 +319,7 @@ function renderProducts(productsToRender = filteredProducts) {
         productCard.onclick =
             () => showProduct(product.id)
 
-
         productCard.innerHTML = `
-
             <img
                 src="${product.image}"
                 alt="${product.name}"
@@ -382,20 +331,12 @@ function renderProducts(productsToRender = filteredProducts) {
                     ${product.brand}
                 </div>
 
-                <h3>
-                    ${product.name}
-                </h3>
+                <h3>${product.name}</h3>
 
                 <div class="product-rating">
-
                     ${"★".repeat(Math.floor(product.rating))}
-
-                    ${"☆".repeat(
-                        5 - Math.floor(product.rating)
-                    )}
-
+                    ${"☆".repeat(5 - Math.floor(product.rating))}
                     ${product.rating}
-
                 </div>
 
                 <div class="product-price">
@@ -418,7 +359,6 @@ function renderProducts(productsToRender = filteredProducts) {
         `
 
         productGrid.appendChild(productCard)
-
     })
 }
 
@@ -436,7 +376,6 @@ function showProduct(productId) {
         return
     }
 
-
     if (!recentlyViewed.includes(productId)) {
 
         recentlyViewed.unshift(productId)
@@ -448,17 +387,14 @@ function showProduct(productId) {
         saveRecentlyViewed()
     }
 
-
     const productDetail =
         document.getElementById("productDetail")
-
 
     const deliveryDate = new Date()
 
     deliveryDate.setDate(
         deliveryDate.getDate() + 7
     )
-
 
     productDetail.innerHTML = `
 
@@ -472,33 +408,19 @@ function showProduct(productId) {
 
         </div>
 
-
         <div class="product-info">
 
-            <h1>
-                ${product.name}
-            </h1>
-
+            <h1>${product.name}</h1>
 
             <div class="brand">
                 ${product.brand}
             </div>
 
-
             <div class="product-rating">
-
-                ${"★".repeat(
-                    Math.floor(product.rating)
-                )}
-
-                ${"☆".repeat(
-                    5 - Math.floor(product.rating)
-                )}
-
+                ${"★".repeat(Math.floor(product.rating))}
+                ${"☆".repeat(5 - Math.floor(product.rating))}
                 ${product.rating}/5
-
             </div>
-
 
             <div class="product-price">
 
@@ -516,141 +438,85 @@ function showProduct(productId) {
 
             </div>
 
-
             <div class="description">
                 ${product.description}
             </div>
 
-
             <div class="product-option">
 
                 ${
-                    product.colors &&
-                    product.colors.length > 0
-                    ?
+                    product.colors && product.colors.length > 0
+                    ? `
+                        <div class="option-group">
+                            <label>Color:</label>
+
+                            <select id="selectedColor">
+                                ${product.colors.map(color =>
+                                    `<option value="${color}">${color}</option>`
+                                ).join("")}
+                            </select>
+                        </div>
                     `
-
-                    <div class="option-group">
-
-                        <label>
-                            Color:
-                        </label>
-
-                        <select id="selectedColor">
-
-                            ${product.colors.map(color =>
-                                `<option value="${color}">
-                                    ${color}
-                                </option>`
-                            ).join("")}
-
-                        </select>
-
-                    </div>
-
-                    `
-                    :
-                    ""
+                    : ""
                 }
 
-
                 ${
-                    product.sizes &&
-                    product.sizes.length > 0
-                    ?
+                    product.sizes && product.sizes.length > 0
+                    ? `
+                        <div class="option-group">
+                            <label>Size:</label>
+
+                            <select id="selectedSize">
+                                ${product.sizes.map(size =>
+                                    `<option value="${size}">${size}</option>`
+                                ).join("")}
+                            </select>
+                        </div>
                     `
-
-                    <div class="option-group">
-
-                        <label>
-                            Size:
-                        </label>
-
-                        <select id="selectedSize">
-
-                            ${product.sizes.map(size =>
-                                `<option value="${size}">
-                                    ${size}
-                                </option>`
-                            ).join("")}
-
-                        </select>
-
-                    </div>
-
-                    `
-                    :
-                    ""
+                    : ""
                 }
 
             </div>
-
 
             <div class="address-section">
 
-                <h3>
-                    Delivery Address
-                </h3>
-
+                <h3>Delivery Address</h3>
 
                 ${
                     currentUser.address
-                    ?
+                    ? `
+                        <p>${currentUser.address}</p>
+
+                        <button
+                            class="btn-secondary"
+                            onclick="showPage('account')"
+                        >
+                            Change Address
+                        </button>
                     `
+                    : `
+                        <p>No address added</p>
 
-                    <p>
-                        ${currentUser.address}
-                    </p>
-
-                    <button
-                        class="btn-secondary"
-                        onclick="showPage('account')"
-                    >
-                        Change Address
-                    </button>
-
-                    `
-                    :
-                    `
-
-                    <p>
-                        No address added
-                    </p>
-
-                    <button
-                        class="btn-secondary"
-                        onclick="showPage('account')"
-                    >
-                        Add Address
-                    </button>
-
+                        <button
+                            class="btn-secondary"
+                            onclick="showPage('account')"
+                        >
+                            Add Address
+                        </button>
                     `
                 }
 
             </div>
 
-
             <div class="delivery-info">
 
-                <h4>
-                    Delivery Information
-                </h4>
+                <h4>Delivery Information</h4>
 
-                <p>
-                    📅 Delivery by
-                    ${deliveryDate.toLocaleDateString()}
-                </p>
-
-                <p>
-                    ↩️ 10 days return policy
-                </p>
-
-                <p>
-                    💰 Cash on delivery available
-                </p>
+                <p>📅 Delivery by ${deliveryDate.toLocaleDateString()}</p>
+                <p>↩️ 10 days return policy</p>
+                <p>💰 Cash on delivery available</p>
 
             </div>
-
 
             <div class="product-actions">
 
@@ -660,7 +526,6 @@ function showProduct(productId) {
                 >
                     Add to Cart
                 </button>
-
 
                 <button
                     class="btn-secondary"
@@ -672,7 +537,6 @@ function showProduct(productId) {
             </div>
 
         </div>
-
     `
 
     showPage("product")
@@ -692,14 +556,11 @@ function addToCart(productId) {
         return
     }
 
-
     const selectedColor =
         document.getElementById("selectedColor")?.value || ""
 
-
     const selectedSize =
         document.getElementById("selectedSize")?.value || ""
-
 
     const existingItem =
         cart.find(item =>
@@ -708,7 +569,6 @@ function addToCart(productId) {
             item.size === selectedSize
         )
 
-
     if (existingItem) {
 
         existingItem.quantity += 1
@@ -716,36 +576,34 @@ function addToCart(productId) {
     } else {
 
         cart.push({
-
             id: productId,
-
             name: product.name,
-
             brand: product.brand,
-
             price: product.price,
-
             originalPrice: product.originalPrice,
-
             discount: product.discount,
-
             image: product.image,
-
             color: selectedColor,
-
             size: selectedSize,
-
             quantity: 1
-
         })
     }
 
-
     updateCartCount()
-
     saveCartData()
 
     alert("Product Added to Cart!")
+}
+
+
+// =========================
+// BUY NOW
+// =========================
+
+function buyNow(productId) {
+
+    addToCart(productId)
+    proceedCheckout()
 }
 
 
@@ -761,20 +619,20 @@ function renderCart() {
     const cartSummary =
         document.getElementById("cartSummary")
 
+    if (!cartItems || !cartSummary) {
+        return
+    }
 
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
-            <p>
-                Your cart is empty.
+            <div class="empty-cart">
+                <p>Your cart is empty.</p>
 
-                <a
-                    href="#"
-                    onclick="showPage('home')"
-                >
+                <a href="#" onclick="showPage('home')">
                     Continue Shopping
                 </a>
-            </p>
+            </div>
         `
 
         cartSummary.innerHTML = ""
@@ -782,13 +640,10 @@ function renderCart() {
         return
     }
 
-
     cartItems.innerHTML = ""
 
     let totalOriginal = 0
-
     let totalDiscounted = 0
-
 
     cart.forEach((item, index) => {
 
@@ -798,18 +653,13 @@ function renderCart() {
         const itemOriginalTotal =
             item.originalPrice * item.quantity
 
-
         totalOriginal += itemOriginalTotal
-
         totalDiscounted += itemTotal
-
 
         const cartItem =
             document.createElement("div")
 
-
         cartItem.className = "cart-item"
-
 
         cartItem.innerHTML = `
 
@@ -818,40 +668,25 @@ function renderCart() {
                 alt="${item.name}"
             >
 
-
             <div class="cart-item-details">
 
-                <h1>
-                    ${item.name}
-                </h1>
-
+                <h3>${item.name}</h3>
 
                 <div class="product-brand">
                     ${item.brand}
                 </div>
 
-
                 ${
                     item.color
-                    ?
-                    `<p>
-                        Color: ${item.color}
-                    </p>`
-                    :
-                    ""
+                    ? `<p>Color: ${item.color}</p>`
+                    : ""
                 }
-
 
                 ${
                     item.size
-                    ?
-                    `<p>
-                        Size: ${item.size}
-                    </p>`
-                    :
-                    ""
+                    ? `<p>Size: ${item.size}</p>`
+                    : ""
                 }
-
 
                 <div class="product-price">
 
@@ -869,30 +704,19 @@ function renderCart() {
 
                 </div>
 
-
-                <!-- QUANTITY CONTROLS -->
-
-                <div class="quantity-controls">
+                <div class="cart-quantity">
 
                     <button
-                        class="quantity-btn"
                         onclick="updateQuantity(${index}, -1)"
                     >
-                        -
+                        −
                     </button>
 
-
-                    <input
-                        type="number"
-                        class="quantity-input"
-                        value="${item.quantity}"
-                        min="1"
-                        onchange="updateQuantity(${index}, 0, this.value)"
-                    >
-
+                    <span>
+                        ${item.quantity}
+                    </span>
 
                     <button
-                        class="quantity-btn"
                         onclick="updateQuantity(${index}, 1)"
                     >
                         +
@@ -900,32 +724,21 @@ function renderCart() {
 
                 </div>
 
-
                 <p>
                     Total: ₹${itemTotal}
                 </p>
 
-
-                <!-- REMOVE BUTTON -->
-
-                <div>
-
-                    <button
-                        class="btn-secondary"
-                        onclick="removeFromCart(${index})"
-                    >
-                        Remove
-                    </button>
-
-                </div>
+                <button
+                    class="cart-remove"
+                    onclick="removeFromCart(${index})"
+                >
+                    Remove
+                </button>
 
             </div>
-
         `
 
-
         cartItems.appendChild(cartItem)
-
     })
 
 
@@ -936,73 +749,47 @@ function renderCart() {
     const deliveryCharges =
         totalDiscounted > 500 ? 0 : 50
 
-
     const finalTotal =
         totalDiscounted + deliveryCharges
 
 
+    // =========================
+    // CART SUMMARY
+    // =========================
+
     cartSummary.innerHTML = `
 
-        <h3>
-            Price Details
-        </h3>
-
+        <h3>Price Details</h3>
 
         <div class="summary-row">
-
-            <span>
-                Total MRP:
-            </span>
-
-            <span>
-                ₹${totalOriginal}
-            </span>
-
+            <span>Total MRP:</span>
+            <span>₹${totalOriginal}</span>
         </div>
 
-
         <div class="summary-row">
-
-            <span>
-                Discount:
-            </span>
-
-            <span>
-                ₹${totalOriginal - totalDiscounted}
-            </span>
-
+            <span>Discount:</span>
+            <span>₹${totalOriginal - totalDiscounted}</span>
         </div>
 
-
         <div class="summary-row">
 
-            <span>
-                Delivery Charges:
-            </span>
+            <span>Delivery Charges:</span>
 
             <span>
                 ${
                     deliveryCharges === 0
-                    ?
-                    "FREE"
-                    :
-                    "₹" + deliveryCharges
+                    ? "FREE"
+                    : "₹" + deliveryCharges
                 }
             </span>
 
         </div>
 
-
-        <div class="summary-divider">
-
-        </div>
-
+        <div class="summary-divider"></div>
 
         <div class="summary-row summary-total">
 
-            <span>
-                Total Amount:
-            </span>
+            <span>Total Amount:</span>
 
             <span>
                 ₹${finalTotal}
@@ -1010,15 +797,12 @@ function renderCart() {
 
         </div>
 
-
         <button
-            class="btn-primary"
+            class="checkout-btn"
             onclick="proceedCheckout()"
-            style="width:100%; margin-top:20px;"
         >
             Place Order
         </button>
-
     `
 }
 
@@ -1027,51 +811,26 @@ function renderCart() {
 // UPDATE QUANTITY
 // =========================
 
-function updateQuantity(
-    index,
-    change,
-    newValue = null
-) {
+function updateQuantity(index, change) {
 
     if (!cart[index]) {
         return
     }
 
-
-    // MANUAL QUANTITY INPUT
-
-    if (newValue !== null) {
-
-        cart[index].quantity =
-            Math.max(
-                1,
-                parseInt(newValue) || 1
-            )
-
-    }
-
-    // PLUS / MINUS BUTTON
-
-    else {
-
-        cart[index].quantity =
-            Math.max(
-                1,
-                cart[index].quantity + change
-            )
-    }
-
+    cart[index].quantity =
+        Math.max(
+            1,
+            cart[index].quantity + change
+        )
 
     updateCartCount()
-
     saveCartData()
-
     renderCart()
 }
 
 
 // =========================
-// REMOVE ITEM FROM CART
+// REMOVE ITEM
 // =========================
 
 function removeFromCart(index) {
@@ -1083,9 +842,7 @@ function removeFromCart(index) {
     cart.splice(index, 1)
 
     updateCartCount()
-
     saveCartData()
-
     renderCart()
 }
 
@@ -1122,15 +879,11 @@ function updateCartCount() {
             0
         )
 
-
     const cartCountElement =
         document.getElementById("cartCount")
 
-
     if (cartCountElement) {
-
-        cartCountElement.textContent =
-            cartCount
+        cartCountElement.textContent = cartCount
     }
 }
 
@@ -1142,14 +895,9 @@ function updateCartCount() {
 function saveCartData() {
 
     try {
-
         window.cartData = cart
-
     } catch (e) {
-
-        console.log(
-            "Storage not available."
-        )
+        console.log("Storage not available.")
     }
 }
 
@@ -1161,14 +909,9 @@ function saveCartData() {
 function saveRecentlyViewed() {
 
     try {
-
         window.recentlyViewedData =
             recentlyViewed
-
     } catch (e) {
-
-        console.log(
-            "Storage not available"
-        )
+        console.log("Storage not available.")
     }
 }
