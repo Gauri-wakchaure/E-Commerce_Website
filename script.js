@@ -14,8 +14,14 @@ let cart = []
 let orders = []
 let currentOrderSteps = 1;
 
+
+// =========================
+// LOAD DATA
+// =========================
+
 async function loadData() {
     try {
+
         const response = await fetch("data.json")
 
         if (!response.ok) {
@@ -24,30 +30,47 @@ async function loadData() {
 
         const data = await response.json()
 
-        categories = data.categories
-        products = data.products
+        categories = data.categories || []
+        products = data.products || []
 
         initializeApp()
 
     } catch (error) {
+
         console.error("Error loading data", error)
 
         document.body.innerHTML =
-            '<div style="text-align:center; margin-top: 50px"><h2>Error loading data. Please refresh the page.</h2></div>'
+            '<div style="text-align:center; margin-top:50px"><h2>Error loading data. Please refresh the page.</h2></div>'
     }
 }
 
 
+// =========================
+// INITIALIZE APP
+// =========================
+
 function initializeApp() {
+
     renderCategories()
+
     showPage("home")
 }
 
 
+// =========================
+// DOM CONTENT LOADED
+// =========================
+
 document.addEventListener("DOMContentLoaded", function () {
+
     loadData()
+
 })
 
+
+// =========================
+// SHOW PAGE
+// =========================
 
 function showPage(pageId) {
 
@@ -64,27 +87,47 @@ function showPage(pageId) {
     switch (pageId) {
 
         case "home":
+
             renderCategories()
+
             break
+
 
         case "cart":
+
             renderCart()
+
             break
+
 
         case "orders":
+
             renderOrders()
+
             break
 
+
         case "account":
+
             renderAccountPage()
+
             break
     }
 }
 
 
+// =========================
+// RENDER CATEGORIES
+// =========================
+
 function renderCategories() {
 
     const categoryGrid = document.getElementById("categoryGrid")
+
+    if (!categoryGrid) {
+        console.error("categoryGrid element not found")
+        return
+    }
 
     categoryGrid.innerHTML = ""
 
@@ -97,10 +140,13 @@ function renderCategories() {
         categoryCard.onclick = () => showCategory(category.id)
 
         let cardContent = `
-        <img src="${category.image}" alt="${category.name}">
-        <div class="category-card-content">
-        <h3>${category.name}</h3>
-        <p>${category.description}</p>
+            <img src="${category.image}" alt="${category.name}">
+
+            <div class="category-card-content">
+
+                <h3>${category.name}</h3>
+
+                <p>${category.description}</p>
         `
 
         if (category.isRecentlyViewed) {
@@ -118,8 +164,11 @@ function renderCategories() {
         }
 
         cardContent += `
-        <a href="#" class="category-btn">View Products</a>
-        </div>
+                <a href="#" class="category-btn">
+                    View Products
+                </a>
+
+            </div>
         `
 
         categoryCard.innerHTML = cardContent
@@ -128,6 +177,10 @@ function renderCategories() {
     })
 }
 
+
+// =========================
+// SHOW CATEGORY
+// =========================
 
 function showCategory(categoryId) {
 
@@ -151,20 +204,33 @@ function showCategory(categoryId) {
         const category =
             categories.find(cat => cat.id === categoryId)
 
-        document.getElementById("categoryTitle").textContent =
-            category.name
+        if (category) {
+
+            document.getElementById("categoryTitle").textContent =
+                category.name
+        }
     }
 
     populateFilters()
+
     renderProducts()
+
     showPage("category")
 }
 
+
+// =========================
+// POPULATE FILTERS
+// =========================
 
 function populateFilters() {
 
     const brandFilter =
         document.getElementById("brandFilter")
+
+    if (!brandFilter) {
+        return
+    }
 
     const brands =
         [...new Set(
@@ -180,12 +246,17 @@ function populateFilters() {
             document.createElement("option")
 
         option.value = brand
+
         option.textContent = brand
 
         brandFilter.appendChild(option)
     })
 }
 
+
+// =========================
+// APPLY FILTERS
+// =========================
 
 function applyFilters() {
 
@@ -206,14 +277,16 @@ function applyFilters() {
     let filtered =
         filteredProducts.filter(product => {
 
-            if (product.price > maxPrice)
+            if (product.price > maxPrice) {
                 return false
+            }
 
             if (
                 selectedBrand &&
                 product.brand !== selectedBrand
-            )
+            ) {
                 return false
+            }
 
             return true
         })
@@ -249,6 +322,7 @@ function applyFilters() {
 
 
         default:
+
             break
     }
 
@@ -256,14 +330,22 @@ function applyFilters() {
 }
 
 
-function renderProducts(products = filteredProducts) {
+// =========================
+// RENDER PRODUCTS
+// =========================
+
+function renderProducts(productsToRender = filteredProducts) {
 
     const productGrid =
         document.getElementById("productGrid")
 
+    if (!productGrid) {
+        return
+    }
+
     productGrid.innerHTML = ""
 
-    if (products.length === 0) {
+    if (productsToRender.length === 0) {
 
         productGrid.innerHTML =
             '<p>No products found matching your criteria.</p>'
@@ -272,7 +354,7 @@ function renderProducts(products = filteredProducts) {
     }
 
 
-    products.forEach(product => {
+    productsToRender.forEach(product => {
 
         const productCard =
             document.createElement("div")
@@ -284,53 +366,71 @@ function renderProducts(products = filteredProducts) {
 
 
         productCard.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
 
-        <div class="product-card-content">
+            <img
+                src="${product.image}"
+                alt="${product.name}"
+            >
 
-            <div class="product-brand">
-                ${product.brand}
+            <div class="product-card-content">
+
+                <div class="product-brand">
+                    ${product.brand}
+                </div>
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+                <div class="product-rating">
+
+                    ${"★".repeat(Math.floor(product.rating))}
+
+                    ${"☆".repeat(
+                        5 - Math.floor(product.rating)
+                    )}
+
+                    ${product.rating}
+
+                </div>
+
+                <div class="product-price">
+
+                    <span class="current-price">
+                        ₹${product.price}
+                    </span>
+
+                    <span class="original-price">
+                        ₹${product.originalPrice}
+                    </span>
+
+                    <span class="discount">
+                        ${product.discount}% OFF
+                    </span>
+
+                </div>
+
             </div>
-
-            <h3>${product.name}</h3>
-
-            <div class="product-rating">
-                ${"★".repeat(Math.floor(product.rating))}
-                ${"☆".repeat(5 - Math.floor(product.rating))}
-                ${product.rating}
-            </div>
-
-            <div class="product-price">
-
-                <span class="current-price">
-                    ₹${product.price}
-                </span>
-
-                <span class="original-price">
-                    ₹${product.originalPrice}
-                </span>
-
-                <span class="discount">
-                    ${product.discount}% OFF
-                </span>
-
-            </div>
-
-        </div>
         `
 
         productGrid.appendChild(productCard)
+
     })
 }
 
+
+// =========================
+// SHOW PRODUCT
+// =========================
 
 function showProduct(productId) {
 
     const product =
         products.find(p => p.id === productId)
 
-    if (!product)
+    if (!product) {
         return
+    }
 
 
     if (!recentlyViewed.includes(productId)) {
@@ -358,325 +458,658 @@ function showProduct(productId) {
 
     productDetail.innerHTML = `
 
-    <div>
+        <div>
 
-        <img
-            src="${product.image}"
-            alt="${product.name}"
-            class="product-image"
-        >
-
-    </div>
-
-
-    <div class="product-info">
-
-        <h1>${product.name}</h1>
-
-        <div class="brand">
-            ${product.brand}
-        </div>
-
-
-        <div class="product-rating">
-
-            ${"★".repeat(Math.floor(product.rating))}
-            ${"☆".repeat(5 - Math.floor(product.rating))}
-
-            ${product.rating}/5
+            <img
+                src="${product.image}"
+                alt="${product.name}"
+                class="product-image"
+            >
 
         </div>
 
 
-        <div class="product-price">
+        <div class="product-info">
 
-            <span class="current-price">
-                ₹${product.price}
-            </span>
-
-            <span class="original-price">
-                ₹${product.originalPrice}
-            </span>
-
-            <span class="discount">
-                ${product.discount}% OFF
-            </span>
-
-        </div>
+            <h1>
+                ${product.name}
+            </h1>
 
 
-        <div class="description">
-            ${product.description}
-        </div>
+            <div class="brand">
+                ${product.brand}
+            </div>
 
 
-        <div class="product-option">
+            <div class="product-rating">
 
-            ${product.colors.length > 0 ? `
+                ${"★".repeat(
+                    Math.floor(product.rating)
+                )}
 
-                <div class="option-group">
+                ${"☆".repeat(
+                    5 - Math.floor(product.rating)
+                )}
 
-                    <label>Color:</label>
+                ${product.rating}/5
 
-                    <select id="selectedColor">
-
-                        ${product.colors.map(color =>
-                            `<option value="${color}">
-                                ${color}
-                            </option>`
-                        ).join("")}
-
-                    </select>
-
-                </div>
-
-            ` : ""}
+            </div>
 
 
-            ${product.sizes.length > 0 ? `
+            <div class="product-price">
 
-                <div class="option-group">
+                <span class="current-price">
+                    ₹${product.price}
+                </span>
 
-                    <label>Size:</label>
+                <span class="original-price">
+                    ₹${product.originalPrice}
+                </span>
 
-                    <select id="selectedSize">
+                <span class="discount">
+                    ${product.discount}% OFF
+                </span>
 
-                        ${product.sizes.map(size =>
-                            `<option value="${size}">
-                                ${size}
-                            </option>`
-                        ).join("")}
-
-                    </select>
-
-                </div>
-
-            ` : ""}
-
-        </div>
+            </div>
 
 
-        <div class="address-section">
+            <div class="description">
+                ${product.description}
+            </div>
 
-            <h3>Delivery Address</h3>
+
+            <div class="product-option">
+
+                ${
+                    product.colors &&
+                    product.colors.length > 0
+                    ?
+                    `
+
+                    <div class="option-group">
+
+                        <label>
+                            Color:
+                        </label>
+
+                        <select id="selectedColor">
+
+                            ${product.colors.map(color =>
+                                `<option value="${color}">
+                                    ${color}
+                                </option>`
+                            ).join("")}
+
+                        </select>
+
+                    </div>
+
+                    `
+                    :
+                    ""
+                }
 
 
-            ${currentUser.address ? `
+                ${
+                    product.sizes &&
+                    product.sizes.length > 0
+                    ?
+                    `
 
-                <p>${currentUser.address}</p>
+                    <div class="option-group">
+
+                        <label>
+                            Size:
+                        </label>
+
+                        <select id="selectedSize">
+
+                            ${product.sizes.map(size =>
+                                `<option value="${size}">
+                                    ${size}
+                                </option>`
+                            ).join("")}
+
+                        </select>
+
+                    </div>
+
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            <div class="address-section">
+
+                <h3>
+                    Delivery Address
+                </h3>
+
+
+                ${
+                    currentUser.address
+                    ?
+                    `
+
+                    <p>
+                        ${currentUser.address}
+                    </p>
+
+                    <button
+                        class="btn-secondary"
+                        onclick="showPage('account')"
+                    >
+                        Change Address
+                    </button>
+
+                    `
+                    :
+                    `
+
+                    <p>
+                        No address added
+                    </p>
+
+                    <button
+                        class="btn-secondary"
+                        onclick="showPage('account')"
+                    >
+                        Add Address
+                    </button>
+
+                    `
+                }
+
+            </div>
+
+
+            <div class="delivery-info">
+
+                <h4>
+                    Delivery Information
+                </h4>
+
+                <p>
+                    📅 Delivery by
+                    ${deliveryDate.toLocaleDateString()}
+                </p>
+
+                <p>
+                    ↩️ 10 days return policy
+                </p>
+
+                <p>
+                    💰 Cash on delivery available
+                </p>
+
+            </div>
+
+
+            <div class="product-actions">
+
+                <button
+                    class="btn-primary"
+                    onclick="addToCart(${product.id})"
+                >
+                    Add to Cart
+                </button>
+
 
                 <button
                     class="btn-secondary"
-                    onclick="showPage('account')"
+                    onclick="buyNow(${product.id})"
                 >
-                    Change Address
+                    Buy Now
                 </button>
 
-            ` : `
-
-                <p>No address added</p>
-
-                <button
-                    class="btn-secondary"
-                    onclick="showPage('account')"
-                >
-                    Add Address
-                </button>
-
-            `}
+            </div>
 
         </div>
 
-
-        <div class="delivery-info">
-
-            <h4>Delivery Information</h4>
-
-            <p>
-                📅 Delivery by
-                ${deliveryDate.toLocaleDateString()}
-            </p>
-
-            <p>
-                ↩️ 10 days return policy
-            </p>
-
-            <p>
-                💰 Cash on delivery available
-            </p>
-
-        </div>
-
-
-        <div class="product-actions">
-
-            <button
-                class="btn-primary"
-                onclick="addToCart(${product.id})"
-            >
-                Add to Cart
-            </button>
-
-            <button
-                class="btn-secondary"
-                onclick="buyNow(${product.id})"
-            >
-                Buy Now
-            </button>
-
-        </div>
-
-    </div>
     `
 
     showPage("product")
 }
 
-function addToCart(productId){
-    const product = products.find(p => p.id === productId)
-    if(!product) return;
 
-    const selectedColor = document.getElementById("selectedColor")?.
-    value || " ";
+// =========================
+// ADD TO CART
+// =========================
 
-    const selectedSize = document.getElementById("selectedSize")?.
-    value || " ";
+function addToCart(productId) {
 
-    const existingItem = cart.find(items =>
-        items.id ===productId &&
-        items.color === selectedColor &&
-        items.size === selectedSize
-    )
+    const product =
+        products.find(p => p.id === productId)
 
-    if(existingItem){
-        existingItem.quantity += 1;
-    }else{
-        cart.push ({
-            id:productId,
-            name:product.name,
-            brand:product.brand,
-            price:product.price,
-            originalPrice:product.originalPrice,
-            discount:product.discount,
-            image:product.image,
-            color:selectedColor,
-            size:selectedSize,
-            quantity:1
+    if (!product) {
+        return
+    }
+
+
+    const selectedColor =
+        document.getElementById("selectedColor")?.value || ""
+
+
+    const selectedSize =
+        document.getElementById("selectedSize")?.value || ""
+
+
+    const existingItem =
+        cart.find(item =>
+            item.id === productId &&
+            item.color === selectedColor &&
+            item.size === selectedSize
+        )
+
+
+    if (existingItem) {
+
+        existingItem.quantity += 1
+
+    } else {
+
+        cart.push({
+
+            id: productId,
+
+            name: product.name,
+
+            brand: product.brand,
+
+            price: product.price,
+
+            originalPrice: product.originalPrice,
+
+            discount: product.discount,
+
+            image: product.image,
+
+            color: selectedColor,
+
+            size: selectedSize,
+
+            quantity: 1
+
         })
     }
-    updateCartCount();
-    saveCartData();
-    alert("Product Added to Cart!");
+
+
+    updateCartCount()
+
+    saveCartData()
+
+    alert("Product Added to Cart!")
 }
+
+
+// =========================
+// RENDER CART
+// =========================
 
 function renderCart() {
-    const cartItems = document.getElementById("cartItems");
-    const cartSummary = document.getElementById("cartSummary");
 
-    if(cart.length === 0) {
-        cartItems.innerHTML = `<p> Your cart is empty. <a href="#"
-        onclick= "showPage(\'home\')">Continue Shopping</a></p>`;
-        cartSummary.innerHTML = ' ';
-        return;
+    const cartItems =
+        document.getElementById("cartItems")
+
+    const cartSummary =
+        document.getElementById("cartSummary")
+
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+            <p>
+                Your cart is empty.
+                <a
+                    href="#"
+                    onclick="showPage('home')"
+                >
+                    Continue Shopping
+                </a>
+            </p>
+        `
+
+        cartSummary.innerHTML = ""
+
+        return
     }
 
-    cartItems.innerHTML = '';
-    let totalOriginal = 0;
-    let totalDiscounted = 0;
 
-    cart.forEach((item,index) => {
-    const itemTotal = item.price * item.quantity;
-    const itemOriginalTotal = item.originalPrice * item.quantity;
-    totalOriginal += itemOriginalTotal;
-    totalDiscounted += itemTotal;
-    
-    const cartItem = document.createElement("div");
-    cart.className="cart-item";
-    cartItem.innerHTML =`
-    <img src="${item.image}" alt="${item.name}">
-    <div class="cart-item-details">
-       <h1>${item.name}</h1>
-       <div class="product-brand">${item.brand}</div>
-       ${item.color ? `<p>Color: ${item.color}</p>`: ""}
-       ${item.size ? `<p>Size: ${item.size}</p>`: ""}
-       <div class="product-price">
-          <span class="current-price">₹${item.price}</span>
-          <span class="original-price">₹${item.originalPrice}</span>
-          <span class="discount">₹${item.discount}% OFF</span>
-        </div>
-        <div class="quantity-controls">
-           <button class="quantity-btn"
-           onclick="updateQuantity(${index}, -1)"></button>
-           <input type="number" class="quantity-input" value="${item.
-            quantity}" min="1"
-           onchange="updateQuantity(${index},0,this.value)">
-           <button class="quantity-btn"
-           onclick="updateQuantity(${index},1)">+</button>
-        </div>
-        <p>Total: ₹${itemTotal}</p>
-        <div>
-        <button class="btn-secondary" onclick="removeFromCart(${index})">
-        Remove</button>`;
+    cartItems.innerHTML = ""
+
+    let totalOriginal = 0
+
+    let totalDiscounted = 0
+
+
+    cart.forEach((item, index) => {
+
+        const itemTotal =
+            item.price * item.quantity
+
+        const itemOriginalTotal =
+            item.originalPrice * item.quantity
+
+
+        totalOriginal += itemOriginalTotal
+
+        totalDiscounted += itemTotal
+
+
+        const cartItem =
+            document.createElement("div")
+
+
+        cartItem.className = "cart-item"
+
+
+        cartItem.innerHTML = `
+
+            <img
+                src="${item.image}"
+                alt="${item.name}"
+            >
+
+
+            <div class="cart-item-details">
+
+                <h1>
+                    ${item.name}
+                </h1>
+
+
+                <div class="product-brand">
+                    ${item.brand}
+                </div>
+
+
+                ${
+                    item.color
+                    ?
+                    `<p>
+                        Color: ${item.color}
+                    </p>`
+                    :
+                    ""
+                }
+
+
+                ${
+                    item.size
+                    ?
+                    `<p>
+                        Size: ${item.size}
+                    </p>`
+                    :
+                    ""
+                }
+
+
+                <div class="product-price">
+
+                    <span class="current-price">
+                        ₹${item.price}
+                    </span>
+
+                    <span class="original-price">
+                        ₹${item.originalPrice}
+                    </span>
+
+                    <span class="discount">
+                        ${item.discount}% OFF
+                    </span>
+
+                </div>
+
+
+                <div class="quantity-controls">
+
+                    <button
+                        class="quantity-btn"
+                        onclick="updateQuantity(${index}, -1)"
+                    >
+                        -
+                    </button>
+
+
+                    <input
+                        type="number"
+                        class="quantity-input"
+                        value="${item.quantity}"
+                        min="1"
+                        onchange="updateQuantity(${index}, 0, this.value)"
+                    >
+
+
+                    <button
+                        class="quantity-btn"
+                        onclick="updateQuantity(${index}, 1)"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <p>
+                    Total: ₹${itemTotal}
+                </p>
+
+
+                <div>
+
+                    <button
+                        class="btn-secondary"
+                        onclick="removeFromCart(${index})"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            </div>
+
+        `
+
+
         cartItems.appendChild(cartItem)
-  })
 
-  const deliveryCharges = totalDiscount > 500 ? 0 :50 ;
-  const finalTotal = totalDiscounted + deliveryCharges;
+    })
 
-  cartSummary.innerHTML = `
-  <h3>Price Details</h3>
-  <div class="summary-row">
-     <span>Total MRP:</span>
-     <span>₹${totalOriginal}</span>
-  </div>
-  <div class="summary-row">
-     <span>Discount:</span>
-     <span>₹${totalOriginal - totalDiscounted}</span>
-  </div>
-  <div class="summary-row">
-     <span>Delivery Charges:</span>
-     <span>₹${deliveryCharges === 0 ? "FREE": "₹" + deliveryCharges}</span>
-  </div>
-  <div class="summary-divider">
-  <div class="summary-row summary-total">
-     <span>Total Amount:</span>
-     <span>₹${finalTotal}</span>
-  </div>
-  
-  <button class="btn-primary" onclick="proceedCheckout()"
-  style="width:100%; margin-top:20px;">
-  Place Order
-  </button>`
+
+    // =========================
+    // DELIVERY CHARGES
+    // =========================
+
+    const deliveryCharges =
+        totalDiscounted > 500 ? 0 : 50
+
+
+    const finalTotal =
+        totalDiscounted + deliveryCharges
+
+
+    cartSummary.innerHTML = `
+
+        <h3>
+            Price Details
+        </h3>
+
+
+        <div class="summary-row">
+
+            <span>
+                Total MRP:
+            </span>
+
+            <span>
+                ₹${totalOriginal}
+            </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>
+                Discount:
+            </span>
+
+            <span>
+                ₹${totalOriginal - totalDiscounted}
+            </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>
+                Delivery Charges:
+            </span>
+
+            <span>
+                ${
+                    deliveryCharges === 0
+                    ?
+                    "FREE"
+                    :
+                    "₹" + deliveryCharges
+                }
+            </span>
+
+        </div>
+
+
+        <div class="summary-divider">
+
+        </div>
+
+
+        <div class="summary-row summary-total">
+
+            <span>
+                Total Amount:
+            </span>
+
+            <span>
+                ₹${finalTotal}
+            </span>
+
+        </div>
+
+
+        <button
+            class="btn-primary"
+            onclick="proceedCheckout()"
+            style="width:100%; margin-top:20px;"
+        >
+            Place Order
+        </button>
+
+    `
 }
 
-function updateQuantity(index, charge, newValue = null) {
-    if(newValue !== null){
-        cart[index].quantity = Math.max(1, parent(newValue) || 1))
-    }else{
-        cart[index].quantity = Math.max(1, cart[index].quantity + charge)
+
+// =========================
+// UPDATE QUANTITY
+// =========================
+
+function updateQuantity(
+    index,
+    change,
+    newValue = null
+) {
+
+    if (newValue !== null) {
+
+        cart[index].quantity =
+            Math.max(
+                1,
+                parseInt(newValue) || 1
+            )
+
+    } else {
+
+        cart[index].quantity =
+            Math.max(
+                1,
+                cart[index].quantity + change
+            )
     }
 
-    updateCartCount();
-    saveCartData();
+
+    updateCartCount()
+
+    saveCartData()
+
+    renderCart()
 }
+
+
+// =========================
+// UPDATE CART COUNT
+// =========================
 
 function updateCartCount() {
-    const cartCount = cart.reduce((total,item)=> total + item.quantity,0)
-    document.getElementById("cartCount").textContent = cartCount
-}
 
-function saveCartData() {
-    try{
-        window.cartData = cart
-    } catch(e) {
-        console.log("Storage  not available.");
+    const cartCount =
+        cart.reduce(
+            (total, item) =>
+                total + item.quantity,
+            0
+        )
+
+
+    const cartCountElement =
+        document.getElementById("cartCount")
+
+
+    if (cartCountElement) {
+
+        cartCountElement.textContent =
+            cartCount
     }
 }
 
+
+// =========================
+// SAVE CART DATA
+// =========================
+
+function saveCartData() {
+
+    try {
+
+        window.cartData = cart
+
+    } catch (e) {
+
+        console.log(
+            "Storage not available."
+        )
+    }
+}
+
+
+// =========================
+// SAVE RECENTLY VIEWED
+// =========================
+
 function saveRecentlyViewed() {
-    try{
-        window.recentlyViewedData = recentlyViewed;
-    }catch(e){
-        console.log("Storage not available");
+
+    try {
+
+        window.recentlyViewedData =
+            recentlyViewed
+
+    } catch (e) {
+
+        console.log(
+            "Storage not available"
+        )
     }
 }
