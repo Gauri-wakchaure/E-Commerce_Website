@@ -1054,6 +1054,11 @@ function removeFromCart(index){
     renderCart();
 }
 
+function proceedToCheckout(){
+    currentOrderSteps =1;
+    showPage('order');
+}
+
 // =========================
 // UPDATE CART COUNT
 // =========================
