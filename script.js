@@ -649,6 +649,17 @@ function renderCart() {
   </button>`
 }
 
+function updateQuantity(index, charge, newValue = null) {
+    if(newValue !== null){
+        cart[index].quantity = Math.max(1, parent(newValue) || 1))
+    }else{
+        cart[index].quantity = Math.max(1, cart[index].quantity + charge)
+    }
+
+    updateCartCount();
+    saveCartData();
+}
+
 function updateCartCount() {
     const cartCount = cart.reduce((total,item)=> total + item.quantity,0)
     document.getElementById("cartCount").textContent = cartCount
