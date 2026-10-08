@@ -125,7 +125,9 @@ function renderCategories() {
     const categoryGrid = document.getElementById("categoryGrid")
 
     if (!categoryGrid) {
+
         console.error("categoryGrid element not found")
+
         return
     }
 
@@ -174,6 +176,7 @@ function renderCategories() {
         categoryCard.innerHTML = cardContent
 
         categoryGrid.appendChild(categoryCard)
+
     })
 }
 
@@ -250,6 +253,7 @@ function populateFilters() {
         option.textContent = brand
 
         brandFilter.appendChild(option)
+
     })
 }
 
@@ -763,6 +767,7 @@ function renderCart() {
         cartItems.innerHTML = `
             <p>
                 Your cart is empty.
+
                 <a
                     href="#"
                     onclick="showPage('home')"
@@ -865,6 +870,8 @@ function renderCart() {
                 </div>
 
 
+                <!-- QUANTITY CONTROLS -->
+
                 <div class="quantity-controls">
 
                     <button
@@ -898,6 +905,8 @@ function renderCart() {
                     Total: ₹${itemTotal}
                 </p>
 
+
+                <!-- REMOVE BUTTON -->
 
                 <div>
 
@@ -1024,6 +1033,13 @@ function updateQuantity(
     newValue = null
 ) {
 
+    if (!cart[index]) {
+        return
+    }
+
+
+    // MANUAL QUANTITY INPUT
+
     if (newValue !== null) {
 
         cart[index].quantity =
@@ -1032,7 +1048,11 @@ function updateQuantity(
                 parseInt(newValue) || 1
             )
 
-    } else {
+    }
+
+    // PLUS / MINUS BUTTON
+
+    else {
 
         cart[index].quantity =
             Math.max(
@@ -1043,21 +1063,51 @@ function updateQuantity(
 
 
     updateCartCount()
+
     saveCartData()
+
     renderCart()
 }
 
-function removeFromCart(index){
-    cart.splice(index,1);
-    updateCartCount();
-    saveCartData();
-    renderCart();
+
+// =========================
+// REMOVE ITEM FROM CART
+// =========================
+
+function removeFromCart(index) {
+
+    if (index < 0 || index >= cart.length) {
+        return
+    }
+
+    cart.splice(index, 1)
+
+    updateCartCount()
+
+    saveCartData()
+
+    renderCart()
 }
 
-function proceedToCheckout(){
-    currentOrderSteps =1;
-    showPage('order');
+
+// =========================
+// PROCEED TO CHECKOUT
+// =========================
+
+function proceedCheckout() {
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty.")
+
+        return
+    }
+
+    currentOrderSteps = 1
+
+    showPage("order")
 }
+
 
 // =========================
 // UPDATE CART COUNT
