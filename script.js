@@ -1043,12 +1043,16 @@ function updateQuantity(
 
 
     updateCartCount()
-
     saveCartData()
-
     renderCart()
 }
 
+function removeFromCart(index){
+    cart.splice(index,1);
+    updateCartCount();
+    saveCartData();
+    renderCart();
+}
 
 // =========================
 // UPDATE CART COUNT
