@@ -827,6 +827,32 @@ function updateQuantity(index, change) {
     renderCart()
 }
 
+function renderOrderSteps(){
+    const orderSteps = document.getElementById("orderSteps")
+
+    if(currentOrderSteps === 1){
+        if(!currentUser.name || !currentUser.phone || !currentUser.address) {
+            orderSteps.innerHTML= `
+            <div class="order-form">
+             <h2>Step 1: Enter Your Details</h2>
+             <div class="form-group">
+               <label for="orderName">Name:</label>
+               <input type="text" id="orderName" value="${currentUser.name}"
+               placeholder="Enter Your name">
+            </div>
+            <div class="form-group">
+               <label for="orderPhone">Phone Number:</label>
+               <input type="tel" id="orderPhone" value="${currentUser.phone}"
+               placeholder="Enter Your Phone Number">
+            </div>
+            <div class="form-group">
+               <label for="orderAddress">Address:</label>
+               <textarea id="orderAddress" placeholder="Enter
+               Your Address">${currentUser.address}</textarea>
+            </div>`
+        }
+    }
+}
 
 // =========================
 // REMOVE ITEM
