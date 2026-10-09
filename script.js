@@ -940,6 +940,30 @@ function renderOrderSteps(){
    }
 }
 
+function saveOrderDetails(){
+    const name = document.getElementById("orderName").value.trim()
+    const phone = document.getElementById("orderPhone").value.trim()
+    const address = document.getElementById("orderAddress").value.trim()
+    
+    if(!name || !phone || !address){
+        alert("Please fill all required fields")
+        return;
+    }
+
+    currentUser.name = name;
+    currentUser.phone = phone;
+    currentUser.address = address;
+    saveUserData();
+}
+
+function saveUserData(){
+    try{
+        window.userData = currentUser
+    }catch(e) {
+        console.log("Storage not available.");
+    }
+}
+
 // =========================
 // REMOVE ITEM
 // =========================
