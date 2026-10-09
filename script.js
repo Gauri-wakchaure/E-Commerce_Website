@@ -1057,7 +1057,16 @@ sortedOrders.forEach(order=>{
         "on-way"}">
          ${isDelivered ? "Delivered" : "On the Way"}
         </span>
-    </div>`
+    </div>
+    <div class="order-meta">
+    <p><strong>Order Date:</strong>${order.orderDate.toLocaleDateString()}</p>
+    <p><strong>Total:</strong>${order.total + order.deliveryCharges}</p>
+    <p><strong>Items:</strong>${order.items.length} item
+    ${order.items.length > 1 ? "s" : ""}</p>
+    </div>
+    <div class="dropdown-arrow">`
+`
+`
 })
 }
 
