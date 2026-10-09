@@ -964,6 +964,37 @@ function proceedToPayment(){
     renderOrderSteps();
 }
 
+function placeOrder(){
+    const paymentMethod = document.querySelector(`input[name="payment"]:checked`)?.value
+
+    if(!paymentMethod){
+        alert("Please select a payment method.")
+        return;
+    }
+
+    const orderId = "ORD" + Date.now();
+    const orderData = new Date();
+    const deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 7);
+
+    const order = {
+        id:orderId,
+        items:[...cart],
+        total: cart.reduce((total,item)=> total + (item.price * item.quantity),0),
+        deliveryCharges : cart.reduce((total,item)=> total + (item.price + item.quantity),0) > 500 ? 0 : 50,
+        paymentMethod:paymentMethod,
+        orderDate:orderDate,
+        deliveryDate:deliveryDate,
+        status:"confirmed",
+        address:currentUser.address,
+        phone:currentUser.phone,
+        name:currentUser.name       
+    };
+
+    order.push(order)
+    saveOrderData();
+}
+
 function saveUserData(){
     try{
         window.userData = currentUser
