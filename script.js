@@ -995,6 +995,14 @@ function placeOrder(){
     saveOrderData();
 }
 
+function saveOrderData(){
+    try{
+        window.ordersData = orders
+    }catch(e) {
+        console.log("Storage not available.");
+    }
+}
+
 function saveUserData(){
     try{
         window.userData = currentUser
