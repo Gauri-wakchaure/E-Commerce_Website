@@ -1047,6 +1047,17 @@ sortedOrders.forEach(order=>{
          </div>
          </div>`;
     })
+
+    orderDiv.innerHTML = `
+    <div class="order-header" onclick="toggleOrderDetails
+    ("${order.id}")">
+       <div class="order-summary">
+       <h3>Order ID:${order.id}</h3>
+       <span class="status-badge" ${idDelivered ? "delivered":
+        "on-way"}">
+         ${isDelivered ? "Delivered" : "On the Way"}
+        </span>
+    </div>`
 })
 }
 
