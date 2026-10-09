@@ -895,7 +895,23 @@ function renderOrderSteps(){
     <div class="summary-row">
     <span>Items Total:</span>
     <span> ₹${cartTotal}</span>
-    </div>`
+    </div>
+    <div class="summary-row">
+    <span>Delivery Charges:</span>
+    <span> ₹${deliveryCharges===0 ? "FREE":"₹" +
+        deliveryCharges}</span>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-row summary-total">
+    <span>Total Amount:</span>
+    <span> ₹${finalTotal}</span>
+    </div>
+    </div>
+
+    <button class="btn-primary"
+    onclick="proceedToPayment()">Proceed to Payment</button>
+    </div>
+    `
     } 
 }
 
