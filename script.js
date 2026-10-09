@@ -954,6 +954,14 @@ function saveOrderDetails(){
     currentUser.phone = phone;
     currentUser.address = address;
     saveUserData();
+
+    currentOrderSteps = 2;
+    renderOrderSteps();
+}
+
+function proceedToPayment(){
+    currentOrderSteps = 3;
+    renderOrderSteps();
 }
 
 function saveUserData(){
