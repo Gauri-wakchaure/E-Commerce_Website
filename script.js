@@ -849,9 +849,36 @@ function renderOrderSteps(){
                <label for="orderAddress">Address:</label>
                <textarea id="orderAddress" placeholder="Enter
                Your Address">${currentUser.address}</textarea>
-            </div>`
+            </div>
+            <button class="btn-primary" onclick="saveOrderDetails()">
+            Continue to Summary</button>
+        </div>`;
+        }else{
+            currentOrderSteps =2;
+            renderOrderSteps();
         }
-    }
+    }else if(currentOrderSteps === 2) {
+       const cartTotal = cart.reduce((total,item)=>total + (item.price * item.quantity), 0)
+       const deliveryCharges = cartTotal > 500? 0 : 50;
+       const finaltotal = cartTotal + deliveryCharges;
+
+       let cartItemsHtml ='';
+       cart.forEach(item=>{
+        cartItemsHtml += `
+         <div class="cart-item">
+         <img src="${item.image}" alt="${item.name}">
+         <div class="cart-item-details">
+         <h3>${item.name}</h3>
+         <div class="product-brand">${item.brand}</div>
+         ${item.color ? `<p>Color: ${item.color}</p>` : ""}
+         ${item.size ? `<p>Size: ${item.size}</p>` : ""}
+         <p>Quantity: ${item.quantity}</p>
+         <p>Price: ₹${item.price * item.quantity}</p>
+         </div>
+         </div>`
+       })
+
+    } 
 }
 
 // =========================
