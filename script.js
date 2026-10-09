@@ -857,6 +857,7 @@ function renderOrderSteps(){
             currentOrderSteps =2;
             renderOrderSteps();
         }
+
     }else if(currentOrderSteps === 2) {
        const cartTotal = cart.reduce((total,item)=>total + (item.price * item.quantity), 0)
        const deliveryCharges = cartTotal > 500? 0 : 50;
@@ -1008,6 +1009,45 @@ function placeOrder(){
        <button class="btn-secondary" onclick="showPage("home")">
        Continue Shopping</button>
     </div>`;
+}
+
+function renderOrders(){
+    const orderList = document.getElementById("ordersList")
+
+    if(orders.length === 0){
+        ordersList.innerHTML=`<p>No orders found. <a href="#"
+        onclick="shoPage[\'home\']">Start Shopping</a></p>`;
+        return;
+    }
+
+    orderList.innerHTML='';
+    
+    const sortedOrders = [...orders].sort((a,b)=> new Date(b.orderDate) 
+- new Date(a.orderDate))
+
+sortedOrders.forEach(order=>{
+    const currentDate = new Date();
+    const isDelivered = currentDate > order.deliveryDate;
+
+    const orderDiv = document.createElement("div")
+    orderDiv.className="order-card";
+
+    let orderItemsHtml = "";
+    order.items.forEach(item=>{
+        orderItemsHtml += `
+        <div class="cart-item">
+         <img src="${item.image}" alt="${item.name}">
+         <div class="cart-item-details">
+         <h3>${item.name}</h3>
+         <div class="product-brand">${item.brand}</div>
+         ${item.color ? `<p>Color: ${item.color}</p>` : ""}
+         ${item.size ? `<p>Size: ${item.size}</p>` : ""}
+         <p>Quantity: ${item.quantity}</p>
+         <p>Price: ₹${item.price * item.quantity}</p>
+         </div>
+         </div>`;
+    })
+})
 }
 
 function saveOrderData(){
