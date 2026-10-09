@@ -1001,7 +1001,7 @@ function placeOrder(){
 
     document.getElementById("orderSteps").innerHTML=`
     <div class="order-success">
-       <h1> Order Placed Successfully!</h1>
+       <h1>🎉Order Placed Successfully!</h1>
        <p>Your order ID is :<strong>${orderId}</strong></p>
        <p>Expected delivery: ${deliveryDate.toLocaleDateString()}</p>    
        <button class="btn-primary" onclick="showPage("orders")">View 
@@ -1064,7 +1064,10 @@ sortedOrders.forEach(order=>{
     <p><strong>Items:</strong>${order.items.length} item
     ${order.items.length > 1 ? "s" : ""}</p>
     </div>
-    <div class="dropdown-arrow">`
+    <div class="dropdown-arrow">
+      <span class="arrow-icon">❤️</span>
+    </div>
+    </div>`
 `
 `
 })
