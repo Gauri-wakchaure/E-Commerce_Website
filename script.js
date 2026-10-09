@@ -877,7 +877,25 @@ function renderOrderSteps(){
          </div>
          </div>`
        })
-
+      
+    orderSteps.innerHTML= `
+    <div class="order-form">
+    <h2>Step 2 : Order Summary</h2>
+    <div class="address-section">
+    <h3>Delivery Address</h3>
+    <p><strong>${currentUser.name}</strong></p>
+    <p>${currentUser.phone}</p>
+    <p>${currentUser.address}</p>
+    </div>
+    
+    <h3>Order Items</h3>
+    ${cartItemsHtml}
+    
+    <div class="cart-summary">
+    <div class="summary-row">
+    <span>Items Total:</span>
+    <span> ₹${cartTotal}</span>
+    </div>`
     } 
 }
 
