@@ -911,8 +911,33 @@ function renderOrderSteps(){
     <button class="btn-primary"
     onclick="proceedToPayment()">Proceed to Payment</button>
     </div>
-    `
-    } 
+    `;
+   } else if(currentOrderSteps === 3){
+      orderSteps.innerHTML =`
+      
+      <div class="order-form">
+       <h2> Step 3: Payment</h2>
+       <div class="payment-options">
+        <div class="payment-option">
+        <input type="radio" id="upi"
+        name="payment" value="upi">
+        <label for="upi">UPI Payment</label>
+       </div>
+       <div class="payment-option">
+        <input type="radio" id="card"
+        name="payment" value="card">
+        <label for="card">Credit/Debit Card</label>
+       </div>
+       <div class="payment-option">
+        <input type="radio" id="cod"
+        name="payment" value="cod">
+        <label for="cod">Cash on Delivery</label>
+       </div>
+      </div>
+      <button class="btn-primary" onclick="placeOrder()">
+      Place Order</button>
+    </div>`
+   }
 }
 
 // =========================
