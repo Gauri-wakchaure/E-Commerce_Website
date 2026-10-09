@@ -988,11 +988,26 @@ function placeOrder(){
         status:"confirmed",
         address:currentUser.address,
         phone:currentUser.phone,
-        name:currentUser.name       
+        name:currentUser.name
     };
 
     order.push(order)
     saveOrderData();
+
+    cart=[];
+    updateCartCount=[];
+    saveCartData=[];
+
+    document.getElementById("orderSteps").innerHTML=`
+    <div class="order-success">
+       <h1> Order Placed Successfully!</h1>
+       <p>Your order ID is :<strong>${orderId}</strong></p>
+       <p>Expected delivery: ${deliveryDate.toLocaleDateString()}</p>    
+       <button class="btn-primary" onclick="showPage("orders")">View 
+       My Orders</button>
+       <button class="btn-secondary" onclick="showPage("home")">
+       Continue Shopping</button>
+    </div>`;
 }
 
 function saveOrderData(){
