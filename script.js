@@ -1067,9 +1067,47 @@ sortedOrders.forEach(order=>{
     <div class="dropdown-arrow">
       <span class="arrow-icon">❤️</span>
     </div>
-    </div>`
-`
-`
+    </div>
+    
+    <div class="order-details" id="details-${order.id}"
+    style="display: none;">
+       <div class="order-info">
+         <p><strong>Delivery Date:</strong> ${order.
+         deliveryDate.toLocaleDateString()}</p>
+         <p><strong>Payment Method:</strong> ${order.
+        paymentMethod.toUpperCase()}</p>
+
+        <div class="address-section">
+           <h4>Delivery Address:</h4>
+           <p>${order.name}</p>
+           <p>${order.name}</p>
+           <p>${order.name}</p>
+        </div>
+
+        <h4>Order Items:<h4>
+        ${orderItemsHtml}
+
+        <div class="cart-summary">
+          <div class="summary-row">
+          <span>Items Total:</span>
+          <span>${order.total}</total>
+        </div>
+         <div class="summary-row">
+          <span>Delivery Charges::</span>
+          <span>${order.deliveryCharges === 0 ? "FREE" :
+            "₹" + order.deliveryCharges}</span>
+        </div>
+        <div class="summary-divider"></div>
+         <div class="summary-row summary-total">
+          <span>Total Paid:</span>
+          <span>${order.total + order.deliveryCharges}</total>
+        </div>
+       </div>
+      </div>
+    </div>
+
+       `
+
 })
 }
 
