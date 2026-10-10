@@ -1107,7 +1107,20 @@ sortedOrders.forEach(order=>{
     </div>`;
 
     orderList.appendChild(orderDiv);
-});
+   });
+}
+
+function toggleOrderDetails(orderId){
+    const detailsDiv = document.getElementById(`details-${orderId}`)
+    const arrowIcon =detailsDiv.previousElementSibling.querySelector(".arrow-icon")
+
+    if(detailsDiv.style.display ==="none"){
+        detailsDiv.style.display="black";
+        arrowIcon.style.transform= "rotate(100deg)";
+    }else {
+        detailsDiv.style.display="none";
+        arrowIcon.style.transform= "rotate(0deg)";
+    }
 }
 
 function saveOrderData(){
