@@ -1104,9 +1104,7 @@ sortedOrders.forEach(order=>{
         </div>
        </div>
       </div>
-    </div>
-
-       `
+    </div>`;
 
 })
 }
