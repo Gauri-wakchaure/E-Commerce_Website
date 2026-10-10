@@ -1,466 +1,154 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>SmartCart - Your Online Shopping Destination</title>
 
-    <title>
-        SmartCart - Your Online Shopping Destination
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
+    <!-- HEADER -->
+    <header class="header">
+        <div class="nav-container">
 
-<!-- ============================= -->
-<!-- HEADER -->
-<!-- ============================= -->
-
-<header class="header">
-
-    <div class="nav-container">
-
-
-        <!-- LOGO -->
-
-        <a
-            href="#"
-            class="logo"
-            onclick="showPage('home')"
-        >
-            SmartCart
-        </a>
-
-
-        <!-- SEARCH -->
-
-        <div class="search-bar">
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search Products.."
-            >
-
-            <button>
-                Search
-            </button>
-
-        </div>
-
-
-        <!-- NAVIGATION -->
-
-        <div class="nav-actions">
-
-
-            <!-- ACCOUNT -->
-
-            <a
-                href="#"
-                class="nav-btn"
-                onclick="showPage('account')"
-            >
-                👤 Account
+            <a href="#" class="logo" onclick="showPage('home'); return false;">
+                SmartCart
             </a>
 
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <button type="button" onclick="searchProducts()">Search</button>
+            </div>
 
-            <!-- CART -->
-
-            <a
-                href="#"
-                class="nav-btn"
-                onclick="showPage('cart')"
-            >
-                🛒 Cart
-                (<span id="cartCount">0</span>)
-            </a>
-
-
-            <!-- ORDERS -->
-
-            <a
-                href="#"
-                class="nav-btn"
-                onclick="showPage('orders')"
-            >
-                📦 Orders
-            </a>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-
-<!-- ============================= -->
-<!-- MAIN CONTENT -->
-<!-- ============================= -->
-
-<main class="main-content">
-
-
-    <!-- ============================= -->
-    <!-- HOME PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="homePage"
-        class="page"
-    >
-
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <h1>
-                    Welcome to SmartCart
-                </h1>
-
-                <p>
-                    Your one-stop online shopping destination
-                    for all your needs.
-                </p>
-
-                <a
-                    href="#categories"
-                    class="hero-btn"
-                >
-                    Shop Now
+            <div class="nav-actions">
+                <a href="#" class="nav-btn" onclick="showPage('account'); return false;">
+                    👤 Account
                 </a>
 
+                <a href="#" class="nav-btn" onclick="showPage('cart'); return false;">
+                    🛒 Cart (<span id="cartCount">0</span>)
+                </a>
+
+                <a href="#" class="nav-btn" onclick="showPage('orders'); return false;">
+                    📦 Orders
+                </a>
             </div>
+
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- HOME PAGE -->
+        <section id="homePage" class="page">
+
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to SmartCart</h1>
+                    <p>Your one-stop online shopping destination for all your needs.</p>
+                    <a href="#categories" class="hero-btn">Shop Now</a>
+                </div>
+            </section>
+
+            <section class="categories" id="categories">
+                <div class="container">
+                    <h2>Shop by Category</h2>
+                    <div class="category-grid" id="categoryGrid"></div>
+                </div>
+            </section>
 
         </section>
 
-
-        <!-- CATEGORIES -->
-
-        <section
-            class="categories"
-            id="categories"
-        >
-
+        <!-- CATEGORY PAGE -->
+        <section id="categoryPage" class="page hidden">
             <div class="container">
+                <h1 id="categoryTitle">Products</h1>
 
-                <h2>
-                    Shop by Category
-                </h2>
+                <div class="filter-section">
+                    <div class="filter-row">
 
+                        <div class="filter-group">
+                            <label for="sortBy">Sort By:</label>
+                            <select id="sortBy" onchange="applyFilters()">
+                                <option value="relevance">Relevance</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Rating</option>
+                            </select>
+                        </div>
 
-                <div
-                    class="category-grid"
-                    id="categoryGrid"
-                >
-                    <!-- Categories will be loaded by JavaScript -->
+                        <div class="filter-group">
+                            <label for="priceRange">Max Price:</label>
+                            <input type="range" id="priceRange"
+                                   min="0" max="10000" value="10000"
+                                   oninput="applyFilters()">
+                            <span id="priceValue">₹10000</span>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="brandFilter">Brand:</label>
+                            <select id="brandFilter" onchange="applyFilters()">
+                                <option value="">All Brands</option>
+                            </select>
+                        </div>
+
+                    </div>
                 </div>
 
+                <div class="product-grid" id="productGrid"></div>
             </div>
-
         </section>
 
-    </div>
-
-
-
-    <!-- ============================= -->
-    <!-- CATEGORY PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="categoryPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-
-            <h1 id="categoryTitle">
-                Products
-            </h1>
-
-
-            <!-- FILTER SECTION -->
-
-            <div class="filter-section">
-
-                <div class="filter-row">
-
-
-                    <!-- SORT -->
-
-                    <div class="filter-group">
-
-                        <label for="sortBy">
-                            Sort By:
-                        </label>
-
-
-                        <select
-                            id="sortBy"
-                            onchange="applyFilters()"
-                        >
-
-                            <option value="relevance">
-                                Relevance
-                            </option>
-
-                            <option value="price-low">
-                                Price: Low to High
-                            </option>
-
-                            <option value="price-high">
-                                Price: High to Low
-                            </option>
-
-                            <option value="rating">
-                                Rating
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- PRICE -->
-
-                    <div class="filter-group">
-
-                        <label for="priceRange">
-                            Max Price:
-                        </label>
-
-
-                        <input
-                            type="range"
-                            id="priceRange"
-                            min="0"
-                            max="10000"
-                            value="10000"
-                            onchange="applyFilters()"
-                        >
-
-
-                        <span id="priceValue">
-                            ₹10000
-                        </span>
-
-                    </div>
-
-
-                    <!-- BRAND -->
-
-                    <div class="filter-group">
-
-                        <label for="brandFilter">
-                            Brand:
-                        </label>
-
-
-                        <select
-                            id="brandFilter"
-                            onchange="applyFilters()"
-                        >
-
-                            <option value="">
-                                All Brands
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
+        <!-- PRODUCT DETAILS PAGE -->
+        <section id="productPage" class="page hidden">
+            <div class="container">
+                <div class="product-detail" id="productDetail"></div>
             </div>
+        </section>
 
+        <!-- CART PAGE -->
+        <section id="cartPage" class="page hidden">
+            <div class="container">
+                <h1>My Cart</h1>
 
-            <!-- PRODUCT GRID -->
-
-            <div
-                class="product-grid"
-                id="productGrid"
-            >
+                <div id="cartItems" class="cart-items"></div>
+                <div class="cart-summary" id="cartSummary"></div>
             </div>
+        </section>
 
-        </div>
-
-    </div>
-
-
-
-    <!-- ============================= -->
-    <!-- PRODUCT PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="productPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-            <div
-                class="product-detail"
-                id="productDetail"
-            >
+        <!-- CHECKOUT PAGE: ONE ID ONLY -->
+        <section id="orderPage" class="page hidden">
+            <div class="container">
+                <h1>Checkout</h1>
+                <div id="orderSteps"></div>
             </div>
+        </section>
 
-        </div>
-
-    </div>
-
-
-
-    <!-- ============================= -->
-    <!-- CART PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="cartPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-
-            <h1>
-                My Cart
-            </h1>
-
-
-            <!-- CART ITEMS -->
-
-            <div id="cartItems">
+        <!-- ACCOUNT PAGE -->
+        <section id="accountPage" class="page hidden">
+            <div class="container">
+                <h1>My Account</h1>
+                <div id="accountContent"></div>
             </div>
+        </section>
 
-
-            <!-- CART SUMMARY -->
-
-            <div
-                class="cart-summary"
-                id="cartSummary"
-            >
+        <!-- ORDERS PAGE -->
+        <section id="ordersPage" class="page hidden">
+            <div class="container">
+                <h1>My Orders</h1>
+                <div id="ordersList"></div>
             </div>
+        </section>
 
-        </div>
+    </main>
 
-    </div>
-
-    <div
-        id="orderPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-
-            <h1>
-                Place Order
-            </h1>
-
-            <div id="orderSteps">
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================= -->
-    <!-- ACCOUNT PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="accountPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-
-            <h1>
-                My Account
-            </h1>
-
-
-            <div id="accountContent">
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ============================= -->
-    <!-- ORDERS PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="ordersPage"
-        class="page hidden">
-       <div class="container">
-            <h1>
-                My Orders
-            </h1>
-            <div id="ordersList">
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ============================= -->
-    <!-- CHECKOUT / ORDER PAGE -->
-    <!-- ============================= -->
-
-    <div
-        id="orderPage"
-        class="page hidden"
-    >
-
-        <div class="container">
-
-
-            <h1>
-                Checkout
-            </h1>
-
-
-            <div id="orderContent">
-            </div>
-
-        </div>
-
-    </div>
-
-
-</main>
-
-
-
-<!-- ============================= -->
-<!-- JAVASCRIPT -->
-<!-- ============================= -->
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 
 </body>
-
 </html>
