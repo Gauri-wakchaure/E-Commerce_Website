@@ -1106,7 +1106,8 @@ sortedOrders.forEach(order=>{
       </div>
     </div>`;
 
-})
+    orderList.appendChild(orderDiv);
+});
 }
 
 function saveOrderData(){
