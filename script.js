@@ -1367,7 +1367,7 @@ const products = [
     badge: "100% Cashmere",
     isFeatured: false,
     images: [
-      "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&w=800&q=80",
+      "https://xcdn.next.co.uk/common/items/default/default/itemimages/3_4Ratio/product/lge/V16496s.jpg?im=Resize,width=750",
       "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
     ],
     colors: ["Camel Beige", "Heather Slate"],
