@@ -1,134 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartCart | Online Shopping Experience</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartCart | Modern Shopping Experience</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
+  <!-- Floating Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Top Navigation Header -->
   <header class="header">
     <div class="nav-container">
-      <a href="#" class="logo" onclick="showPage('home'); return false;">SmartCart</a>
+      <a href="#" class="logo" onclick="showPage('home'); return false;">
+        <span class="logo-accent">Smart</span>Cart
+      </a>
 
+      <!-- Desktop Search Bar -->
       <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search products, brands, categories..." onkeyup="if(event.key === 'Enter') searchProducts();" />
-        <button id="search-btn" onclick="searchProducts()">Search</button>
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search products, brands, categories..." 
+          onkeyup="if(event.key === 'Enter') handleSearch();" 
+        />
+        <button id="search-btn" onclick="handleSearch()">Search</button>
       </div>
 
+      <!-- Action Navigation -->
       <div class="nav-actions">
-        <a href="#" class="nav-btn" onclick="showPage('account'); return false;">
-          <span>👤</span> Account
+        <a href="#" class="nav-btn" onclick="showWishlistPage(); return false;">
+          <span class="nav-icon">♡</span>
+          <span>Wishlist (<span id="wishlist-count">0</span>)</span>
         </a>
-        <a href="#" class="nav-btn" onclick="showPage('cart'); return false;">
-          <span>🛒</span> Cart (<span id="cart-count">0</span>)
+        <a href="#" class="nav-btn" onclick="showPage('account'); return false;">
+          <span class="nav-icon">👤</span>
+          <span>Account</span>
+        </a>
+        <a href="#" class="nav-btn cart-btn" onclick="showPage('cart'); return false;">
+          <span class="nav-icon">🛒</span>
+          <span>Cart</span>
+          <span id="cart-count" class="badge">0</span>
         </a>
         <a href="#" class="nav-btn" onclick="showPage('orders'); return false;">
-          <span>📦</span> Orders
+          <span class="nav-icon">📦</span>
+          <span>Orders</span>
         </a>
       </div>
 
-      <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+      <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
     </div>
   </header>
 
-  <!-- Mobile Sidebar Overlay & Menu Drawer -->
+  <!-- Mobile Drawer Menu -->
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
   <aside class="sidebar">
-    <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
+    <div class="sidebar-top">
+      <span class="sidebar-brand">SmartCart</span>
+      <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <!-- Mobile In-Drawer Search -->
+    <div class="sidebar-search">
+      <input 
+        type="text" 
+        id="mobile-search-input" 
+        placeholder="Search catalogue..." 
+        onkeyup="if(event.key === 'Enter') { handleMobileSearch(); toggleSidebar(); }" 
+      />
+    </div>
+
     <ul class="sidebar-menu">
       <li><a href="#" onclick="showPage('home'); toggleSidebar(); return false;">🏠 Home</a></li>
-      <li><a href="#" onclick="showPage('account'); toggleSidebar(); return false;">👤 Account</a></li>
-      <li><a href="#" onclick="showPage('cart'); toggleSidebar(); return false;">🛒 Cart</a></li>
-      <li><a href="#" onclick="showPage('orders'); toggleSidebar(); return false;">📦 Orders</a></li>
+      <li><a href="#" onclick="showWishlistPage(); toggleSidebar(); return false;">♡ Wishlist (<span id="mobile-wishlist-count">0</span>)</a></li>
+      <li><a href="#" onclick="showPage('cart'); toggleSidebar(); return false;">🛒 My Cart (<span id="mobile-cart-count">0</span>)</a></li>
+      <li><a href="#" onclick="showPage('orders'); toggleSidebar(); return false;">📦 Track Orders</a></li>
+      <li><a href="#" onclick="showPage('account'); toggleSidebar(); return false;">👤 Profile Settings</a></li>
     </ul>
   </aside>
 
-  <!-- Main View Container -->
+  <!-- Primary Application Views -->
   <main class="main-content">
 
     <!-- 1. Home Page Section -->
     <section id="home-page" class="page">
       <div class="hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1>Welcome to SmartCart</h1>
-          <p>Discover amazing products at unbeatable prices crafted for everyday convenience.</p>
-          <a href="#categories-section" class="hero-btn">Shop Now</a>
+          <span class="hero-badge">Summer 2026 Collection Live</span>
+          <h1>Curated Luxury for Everyday Living</h1>
+          <p>Discover hand-picked electronics, high-grade apparel, and lifestyle essentials crafted with precision.</p>
+          <div class="hero-actions">
+            <a href="#featured-section" class="btn-primary hero-btn">Explore Featured</a>
+            <button class="btn-secondary hero-btn-alt" onclick="showCategory('all')">View All Catalog</button>
+          </div>
         </div>
       </div>
 
+      <!-- Categories Shelf -->
       <div id="categories-section" class="categories">
         <div class="container">
-          <h2>Shop by Category</h2>
-          <div id="category-grid" class="category-grid">
-            <!-- Dynamically populated from data.json -->
+          <div class="section-header">
+            <h2>Shop by Category</h2>
+            <p>Browse our curated collections engineered for modern lifestyle</p>
           </div>
+          <div id="category-grid" class="category-grid"></div>
+        </div>
+      </div>
+
+      <!-- Featured / Best Sellers Shelf -->
+      <div id="featured-section" class="featured-products">
+        <div class="container">
+          <div class="section-header flex-header">
+            <div>
+              <h2>Trending Essentials</h2>
+              <p>Top rated by over 15,000+ satisfied customers nationwide</p>
+            </div>
+            <button class="view-all-link" onclick="showCategory('all')">View All Products →</button>
+          </div>
+          <div id="featured-grid" class="product-grid"></div>
         </div>
       </div>
     </section>
 
-    <!-- 2. Category & Products Catalog Section -->
+    <!-- 2. Products Catalog Section -->
     <section id="category-page" class="page hidden">
       <div class="container">
-        <h1 id="category-title">Products</h1>
+        <div class="catalog-header">
+          <h1 id="category-title">All Products</h1>
+          <p id="category-meta" class="catalog-count">Showing results</p>
+        </div>
 
-        <!-- Filters & Sorting Controls -->
-        <div class="filter-section">
-          <div class="filter-row">
-            <div class="filter-group">
-              <label for="sort-by">Sort By</label>
-              <select id="sort-by" onchange="applyFilters()">
-                <option value="relevance">Relevance</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Customer Rating</option>
-              </select>
-            </div>
+        <!-- Filter and Sort Toolbar -->
+        <div class="filter-toolbar">
+          <div class="filter-item">
+            <label for="sort-by">Sort By</label>
+            <select id="sort-by" onchange="applyFilters()">
+              <option value="relevance">Featured & Relevant</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Customer Ratings</option>
+            </select>
+          </div>
 
-            <div class="filter-group">
-              <label for="price-range">Max Price: <span id="price-value">₹10,000</span></label>
-              <input type="range" id="price-range" min="0" max="10000" step="100" value="10000" oninput="applyFilters()" onchange="applyFilters()" />
-            </div>
+          <div class="filter-item">
+            <label for="price-range">Max Price: <span id="price-value" class="highlight-val">₹15,000</span></label>
+            <input type="range" id="price-range" min="500" max="15000" step="250" value="15000" oninput="applyFilters()" />
+          </div>
 
-            <div class="filter-group">
-              <label for="brand-filter">Brand</label>
-              <select id="brand-filter" onchange="applyFilters()">
-                <option value="">All Brands</option>
-              </select>
-            </div>
+          <div class="filter-item">
+            <label for="brand-filter">Brand</label>
+            <select id="brand-filter" onchange="applyFilters()">
+              <option value="">All Brands</option>
+            </select>
           </div>
         </div>
 
-        <!-- Catalog Product Grid -->
-        <div id="product-grid" class="product-grid">
-          <!-- Dynamically populated product cards -->
-        </div>
+        <div id="product-grid" class="product-grid"></div>
       </div>
     </section>
 
     <!-- 3. Product Single Details View -->
     <section id="product-page" class="page hidden">
       <div class="container">
-        <div id="product-detail" class="product-details">
-          <!-- Dynamically populated full product specifications -->
-        </div>
+        <button class="back-link" onclick="historyBackCategory()">← Back to Products</button>
+        <div id="product-detail" class="product-details"></div>
       </div>
     </section>
 
     <!-- 4. Shopping Cart View -->
     <section id="cart-page" class="page hidden">
       <div class="container">
-        <h1>Shopping Cart</h1>
-        <div id="cart-items">
-          <!-- Dynamically populated cart items -->
-        </div>
-        <div id="cart-summary" class="cart-summary">
-          <!-- Subtotal, delivery calculation, discount and checkout button -->
+        <h1>Your Shopping Cart</h1>
+        <div class="cart-layout">
+          <div id="cart-items" class="cart-items-wrapper"></div>
+          <div id="cart-summary" class="cart-summary-wrapper"></div>
         </div>
       </div>
     </section>
@@ -136,46 +188,48 @@
     <!-- 5. Step-by-Step Checkout View -->
     <section id="order-page" class="page hidden">
       <div class="container">
-        <h1>Checkout</h1>
-        <div id="order-steps">
-          <!-- Rendered dynamically: Step 1 (Address), Step 2 (Summary), Step 3 (Payment) -->
+        <div class="checkout-stepper-header">
+          <div class="step-indicator" id="step-pill-1">1. Delivery Address</div>
+          <div class="step-indicator" id="step-pill-2">2. Order Summary</div>
+          <div class="step-indicator" id="step-pill-3">3. Secure Payment</div>
         </div>
+        <div id="order-steps"></div>
       </div>
     </section>
 
-    <!-- 6. Placed Orders History View -->
+    <!-- 6. Orders History View -->
     <section id="orders-page" class="page hidden">
       <div class="container">
-        <h1>My Orders</h1>
-        <div id="order-list">
-          <!-- Placed orders accordion history -->
-        </div>
+        <h1>Order History & Tracking</h1>
+        <div id="order-list"></div>
       </div>
     </section>
 
-    <!-- 7. User Profile / Account Details View -->
+    <!-- 7. Account View -->
     <section id="account-page" class="page hidden">
       <div class="container">
-        <h1>My Account</h1>
-        <div class="order-form">
-          <h2>Personal Profile</h2>
-          <div class="form-group">
-            <label for="user-name">Full Name</label>
-            <input type="text" id="user-name" placeholder="Enter your full name" />
+        <div class="account-card">
+          <h1>Account Profile</h1>
+          <p class="account-subtitle">Manage your default shipping addresses and contact preferences.</p>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="user-name">Full Name</label>
+              <input type="text" id="user-name" placeholder="e.g. John Doe" />
+            </div>
+            <div class="form-group">
+              <label for="user-email">Email Address</label>
+              <input type="email" id="user-email" placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="user-phone">Phone Number (10 digits)</label>
+              <input type="tel" id="user-phone" placeholder="9876543210" maxlength="10" />
+            </div>
+            <div class="form-group full-width">
+              <label for="user-address">Shipping Street Address</label>
+              <textarea id="user-address" rows="3" placeholder="Apartment / Flat, Street name, City, State, PIN Code"></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="user-email">Email Address</label>
-            <input type="email" id="user-email" placeholder="name@domain.com" />
-          </div>
-          <div class="form-group">
-            <label for="user-phone">Phone Number</label>
-            <input type="tel" id="user-phone" placeholder="10-digit mobile number" />
-          </div>
-          <div class="form-group">
-            <label for="user-address">Shipping Address</label>
-            <textarea id="user-address" rows="4" placeholder="House no, Street, City, State, Postal code"></textarea>
-          </div>
-          <button class="btn-primary" onclick="saveUserAccountInfo()">Save Profile</button>
+          <button class="btn-primary" onclick="saveUserAccountInfo()">Save Profile Data</button>
         </div>
       </div>
     </section>
@@ -185,40 +239,37 @@
   <!-- Complete Site Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>SmartCart</h3>
-          <p>Your trusted online shopping destination for premium quality products at genuine prices. Built end-to-end with vanilla web technologies.</p>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <span class="logo footer-logo"><span class="logo-accent">Smart</span>Cart</span>
+          <p class="footer-desc">Curating benchmark electronics, certified accessories, and bespoke daily fashion. Built with performance vanilla web technologies.</p>
         </div>
-        <div class="footer-section">
+        <div class="footer-col">
           <h4>Navigation</h4>
           <ul>
             <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
-            <li><a href="#" onclick="showPage('account'); return false;">My Account</a></li>
-            <li><a href="#" onclick="showPage('cart'); return false;">Cart</a></li>
-            <li><a href="#" onclick="showPage('orders'); return false;">Order History</a></li>
+            <li><a href="#" onclick="showCategory('all'); return false;">Catalog</a></li>
+            <li><a href="#" onclick="showPage('cart'); return false;">Shopping Cart</a></li>
+            <li><a href="#" onclick="showPage('orders'); return false;">Track Deliveries</a></li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h4>Customer Care</h4>
+        <div class="footer-col">
+          <h4>Security & Assurances</h4>
           <ul>
-            <li><a href="#">Help Center & FAQ</a></li>
-            <li><a href="#">Track Shipment</a></li>
-            <li><a href="#">Replacement Policy</a></li>
-            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#" onclick="return false;">100% Genuine Certified</a></li>
+            <li><a href="#" onclick="return false;">10-Day Easy Returns</a></li>
+            <li><a href="#" onclick="return false;">Encrypted Checkout</a></li>
+            <li><a href="#" onclick="return false;">24/7 Dedicated Support</a></li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h4>Social Media</h4>
-          <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">Twitter</a>
-            <a href="#">Instagram</a>
-          </div>
+        <div class="footer-col">
+          <h4>Exclusive Offers</h4>
+          <p class="newsletter-info">Use coupon <strong>WELCOME10</strong> at checkout for 10% instant off.</p>
+          <div class="coupon-pill-highlight">ACTIVE: WELCOME10</div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 SmartCart. All Rights Reserved.</p>
+        <p>&copy; 2026 SmartCart Enterprise Inc. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
