@@ -1368,7 +1368,7 @@ const products = [
     isFeatured: false,
     images: [
       "https://xcdn.next.co.uk/common/items/default/default/itemimages/3_4Ratio/product/lge/V16496s.jpg?im=Resize,width=750",
-      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
+      "https://i.pinimg.com/originals/d9/96/8e/d9968ece320f51752ec653f9f9fda3ec.jpg"
     ],
     colors: ["Camel Beige", "Heather Slate"],
     sizes: ["180cm x 30cm"],
