@@ -1347,7 +1347,7 @@ const products = [
     isFeatured: false,
     images: [
       "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80"
+      "https://www.lyh.com.sg/media/catalog/product/cache/081c4aa1a77bded9027d935cbb423118/i/m/images_bh2msc7wgo.jpg"
     ],
     colors: ["Hunter Tan", "Midnight Black"],
     sizes: ["Slim 8-Card"],
