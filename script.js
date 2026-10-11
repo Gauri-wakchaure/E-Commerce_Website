@@ -1578,9 +1578,9 @@ function createProductCardHtml(product) {
   return `
     <div class="product-card" onclick="showProductDetails('${product.id}')">
       ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ""}
-      <button 
-        class="wishlist-toggle ${isWish ? 'active' : ''}" 
-        title="Save item" 
+      <button
+        class="wishlist-toggle ${isWish ? 'active' : ''}"
+        title="Save item"
         onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
         ${isWish ? '♥' : '♡'}
       </button>
