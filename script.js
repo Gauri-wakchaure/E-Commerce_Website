@@ -1432,9 +1432,9 @@ let currentCheckoutStep = 1;
 let lastBrowsedCategory = "all";
 
 let userProfile = {
-  name: "Prathmesh Surwase",
-  email: "prathmesh@example.com",
-  phone: "9876543210",
+  name: "Gauri Wakchaure",
+  email: "gauri45@example.com",
+  phone: "2344654367",
   address: "Flat 402, Skyline Residency, Tech Park Road, Bangalore"
 };
 
